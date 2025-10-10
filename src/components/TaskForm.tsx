@@ -5,14 +5,20 @@ import { Spinner } from "./ui/spinner";
 
 function TaskForm() {
 
-    const [taskName, setTaskName] = useState('')
+    const [taskData, setTaskData] = useState({
+        name: "",
+        description: ""
+    })
     const { createTask, addingTask } = useTask()
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        createTask(taskName, setTaskName)
+        createTask(taskData, setTaskData)
         toast.success("Tarea añadida correctamente")
-        setTaskName("")
+        setTaskData({
+            name: "",
+            description: ""
+        })
     }
 
     return (
@@ -29,9 +35,16 @@ function TaskForm() {
                             type="text"
                             required
                             name="taskName"
-                            placeholder="Escribe una tarea"
-                            onChange={(e) => setTaskName(e.target.value)}
-                            value={taskName}
+                            placeholder="Escribe el nombre"
+                            onChange={(e) => setTaskData({...taskData, name: e.target.value})}
+                            value={taskData.name}
+                            className="p-2 border-2 rounded-lg border-gray-500 pr-20 py-3 focus:border-blue-600 focus:border-2 focus:outline-hidden"
+                        />
+                        <textarea
+                            name="taskName"
+                            placeholder="Escribe una descripción"
+                            onChange={(e) => setTaskData({...taskData, description: e.target.value})}
+                            value={taskData.description}
                             className="p-2 border-2 rounded-lg border-gray-500 pr-20 py-3 focus:border-blue-600 focus:border-2 focus:outline-hidden"
                         />
                         <button disabled={addingTask}

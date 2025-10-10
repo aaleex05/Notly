@@ -15,7 +15,7 @@ export const TaskContextProvider = ({ children }) => {
     const [tasks, setTasks] = useState([])
     const [addingTask, setAddingTask] = useState(false)
 
-    const createTask = async (taskName) => {
+    const createTask = async (taskData) => {
         setAddingTask(true);
         const { data: { user } } = await supabase.auth.getUser()
 
@@ -26,7 +26,8 @@ export const TaskContextProvider = ({ children }) => {
 
         try {
             const { error, data } = await supabase.from("tasks").insert({
-                name: taskName,
+                name: taskData.name,
+                description: taskData.description,
                 userID: user.id,
                 done: false,
             })
@@ -34,6 +35,7 @@ export const TaskContextProvider = ({ children }) => {
 
             setTasks([...tasks, ...data])
         } catch (error) {
+            console.log(error)
             toast.error("Error al añadir la tarea")
             return;
         } finally {

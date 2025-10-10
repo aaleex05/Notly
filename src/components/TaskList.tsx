@@ -11,7 +11,8 @@ function TaskList({done = false}) {
 
   interface taskProps {
     name: string,
-    done: boolean
+    description: string,
+    done: boolean,
     id: number
   }
 

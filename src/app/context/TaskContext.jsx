@@ -28,6 +28,8 @@ export const TaskContextProvider = ({ children }) => {
             const { error, data } = await supabase.from("tasks").insert({
                 name: taskData.name,
                 description: taskData.description,
+                status: taskData.status,
+                priority: taskData.priority,
                 userID: user.id,
                 done: false,
             })

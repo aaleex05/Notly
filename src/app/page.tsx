@@ -67,10 +67,10 @@ export function HomeContent() {
     <div className="font-sans p-10">
       <NavBar />
       <div className="flex flex-col pt-20 items-center justify-center min-h-auto">
-        <button 
-        onClick={() => setShowTaskDone(!showTaskDone)}
-        className="bg-gray-800 hover:bg-gray-700 py-2 px-5 cursor-pointer rounded-2xl my-5">{showTaskDone ? 'Show tasks to do' : 'Show tasks done'}</button>
-        <TaskList done={showTaskDone}/>
+        <button
+          onClick={() => setShowTaskDone(!showTaskDone)}
+          className="bg-gray-800 hover:bg-gray-700 py-2 px-5 cursor-pointer rounded-2xl my-5">{showTaskDone ? 'Show tasks to do' : 'Show tasks done'}</button>
+        <TaskList done={showTaskDone} />
       </div>
     </div>
   );

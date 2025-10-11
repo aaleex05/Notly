@@ -12,6 +12,8 @@ function TaskList({done = false}) {
   interface taskProps {
     name: string,
     description: string,
+    status: string,
+    priority: string,
     done: boolean,
     id: number
   }
@@ -20,7 +22,7 @@ function TaskList({done = false}) {
     return <p>No hay tareas</p>
   } else {
     return (
-      <div>
+      <div className='flex'>
         {
           tasks.map((task: taskProps) => (
             <TaskCard key={task.id} {...task} />

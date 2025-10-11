@@ -31,10 +31,10 @@ function TaskCard(task: taskProps) {
                     <p>{task.priority}</p>
                 </div>
             </div>
+            <button className='bg-red-600 py-2 px-4 rounded-2xl cursor-pointer' onClick={() => handleDelete()}>Delete</button>
+            <button className='bg-green-600 py-2 px-4 rounded-2xl cursor-pointer' onClick={() => handleToggleDone()}>Done</button>
         </div>
     )
 }
-{/* <button className='bg-red-600 py-2 px-4 rounded-2xl cursor-pointer' onClick={() => handleDelete()}>Delete</button> */ }
-{/* <button className='bg-green-600 py-2 px-4 rounded-2xl cursor-pointer' onClick={() => handleToggleDone()}>Done</button> */ }
 
 export default TaskCard

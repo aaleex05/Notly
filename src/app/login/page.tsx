@@ -21,7 +21,7 @@ export default function Login() {
                 const { data: { user } } = await supabase.auth.getUser();
                 setUser(user);
                 if (user) {
-                    router.push('/');
+                    router.push('/dashboard');
                 }
             } catch (error) {
                 console.error(error);
@@ -41,7 +41,7 @@ export default function Login() {
             const { error } = await supabase.auth.signInWithOtp({
                 email: email,
                 options: {
-                    emailRedirectTo: '/'
+                    emailRedirectTo: '/dashboard'
                 }
             });
 

@@ -14,6 +14,7 @@ export const TaskContextProvider = ({ children }) => {
 
     const [tasks, setTasks] = useState([])
     const [addingTask, setAddingTask] = useState(false)
+    const [showTaskDone, setShowTaskDone] = useState(false)
 
     const createTask = async (taskData) => {
         setAddingTask(true);
@@ -93,7 +94,7 @@ export const TaskContextProvider = ({ children }) => {
         setTasks(data)
     }
 
-    return <TaskContext.Provider value={{ tasks, getTasks, createTask, addingTask, deleteTask, updateTask }}>
+    return <TaskContext.Provider value={{ tasks, getTasks, createTask, addingTask, deleteTask, updateTask, showTaskDone }}>
         {children}
     </TaskContext.Provider>
 }

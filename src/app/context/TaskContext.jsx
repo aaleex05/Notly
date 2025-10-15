@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react"
+import React, { createContext, useContext, useState } from "react"
 import { supabase } from "../backend/client"
 import { toast } from "sonner"
 
@@ -15,6 +15,11 @@ export const TaskContextProvider = ({ children }) => {
     const [tasks, setTasks] = useState([])
     const [addingTask, setAddingTask] = useState(false)
     const [showTaskDone, setShowTaskDone] = useState(false)
+    const [expanded, setExpanded] = useState(true);
+    const [date, setDate] = useState(Date | undefined > (new Date()))
+    const [open, setOpen] = useState(false)
+    const [value, setValue] = useState("In 2 days")
+
 
     const createTask = async (taskData) => {
         setAddingTask(true);
@@ -74,7 +79,7 @@ export const TaskContextProvider = ({ children }) => {
             .eq("userID", user.id)
             .eq("id", idTask)
             .select()
-        
+
         if (error) toast.error("Error al actualizar la tarea")
 
         setTasks(tasks.filter((task) => task.id != idTask))
@@ -94,7 +99,10 @@ export const TaskContextProvider = ({ children }) => {
         setTasks(data)
     }
 
-    return <TaskContext.Provider value={{ tasks, getTasks, createTask, addingTask, deleteTask, updateTask, showTaskDone }}>
+
+
+    return <TaskContext.Provider 
+    value={{ tasks, getTasks, createTask, addingTask, deleteTask, updateTask, showTaskDone, expanded, setExpanded }}>
         {children}
     </TaskContext.Provider>
 }

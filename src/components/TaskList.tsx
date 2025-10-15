@@ -32,12 +32,12 @@ function TaskList({ done = false }) {
           <p>Aún no has creado ningúna tarea.</p>
           <p>Empieza creando tu primera tarea.</p>
         </div>
-        <CreateTask variante="white"/>
+        <CreateTask variante="white" text='Crear Tarea' size='default'/>
       </div>
     )
   } else {
     return (
-      <div className='flex'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-4 p-2.5 sm:p-5 auto-rows-fr'>
         {
           tasks.map((task: taskProps) => (
             <TaskCard key={task.id} {...task} />

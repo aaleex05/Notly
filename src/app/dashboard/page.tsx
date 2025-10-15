@@ -3,12 +3,12 @@
 import FilterTask from '@/components/FilterTask'
 import TaskList from '@/components/TaskList'
 import { useEffect, useState } from 'react'
-import { TaskContextProvider } from '../context/TaskContext'
-import CreateTask from '@/components/CreateTask'
+import { TaskContextProvider, useTask } from '../context/TaskContext'
 import { Spinner } from '@/components/ui/spinner'
 import { supabase } from '../backend/client'
 import { useRouter } from 'next/navigation'
-import Button from '@/components/ui/button'
+import SideBar, { SideBarItem } from '@/components/SideBar'
+import { LayoutDashboard } from 'lucide-react'
 
 export function DashboardContent() {
 
@@ -16,6 +16,7 @@ export function DashboardContent() {
   const [user, setUser] = useState<any>(null);
   const router = useRouter();
   const [showTaskDone, setShowTaskDone] = useState(false)
+  const { expanded, setExpanded } = useTask()
 
 
   useEffect(() => {
@@ -66,24 +67,33 @@ export function DashboardContent() {
   }
 
   return (
-    <div className="h-dvh flex flex-col">
-      <div className="p-4 flex justify-end">
-        <CreateTask variante="default" />
-      </div>
+    <div className="flex h-screen relative overflow-x-hidden">
+      <SideBar>
+        <SideBarItem icon={<LayoutDashboard />} text="Dashboard" href={"/"} />
+      </SideBar>
 
-      <div className="flex-1">
+      {expanded && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setExpanded(false)}
+        />
+      )}
+
+      <main className={`transition-all min-h-screen flex-1 ${
+      expanded ? "ml-82" : "ml-18"
+    }`}>
+        <FilterTask
+          showTaskDone={showTaskDone}
+          setShowTaskDone={setShowTaskDone}
+        />
         <TaskList done={showTaskDone} />
-        {/* <FilterTask
-    showTaskDone={showTaskDone}
-    setShowTaskDone={setShowTaskDone}
-  /> */}
-      </div>
+      </main>
     </div>
+
   )
 }
 
 export default function Dashboard() {
-
 
   return (
     <TaskContextProvider>

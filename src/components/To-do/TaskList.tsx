@@ -3,13 +3,12 @@ import React, { useEffect, useState } from 'react'
 import TaskCard from './TaskCard'
 import { IconFilePlus, IconListCheck } from "@tabler/icons-react"
 import CreateTask from './CreateTask'
-import { Spinner } from './ui/spinner'
+import { Spinner } from '../ui/spinner'
 import FilterTask from './FilterTask'
 
 
 function TaskList({ done = false }) {
-  const { tasks, getTasks } = useTask()
-  const [loading, setLoading] = useState(true);
+  const { tasks, getTasks, loadinTask } = useTask()
 
   useEffect(() => {
     getTasks(done)
@@ -39,13 +38,7 @@ function TaskList({ done = false }) {
         <CreateTask variante="white" text='Crear Tarea' size='default' />
       </div>
     )
-  } else if (!loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Spinner />
-      </div>
-    );
-  }
+  } 
   else {
     // console.log(tasks)
     return (

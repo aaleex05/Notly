@@ -8,7 +8,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import Button, { buttonVariants } from "./ui/buttonStyle"
+import Button, { buttonVariants } from "../ui/buttonStyle"
 import TaskForm from "./TaskForm"
 
 interface CreateTaskProps {

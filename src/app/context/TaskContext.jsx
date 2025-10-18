@@ -10,6 +10,7 @@ export const useTask = () => {
     return context
 }
 
+
 export const TaskContextProvider = ({ children }) => {
 
     const [tasks, setTasks] = useState([])
@@ -27,7 +28,7 @@ export const TaskContextProvider = ({ children }) => {
         const { data: { user } } = await supabase.auth.getUser()
 
         if (!user) {
-            toast.error("No se pudo obtener el usuario autenticado");
+            console.log("No se pudo obtener el usuario autenticado");
             return;
         }
 
@@ -103,23 +104,27 @@ export const TaskContextProvider = ({ children }) => {
     }
 
     const getTasks = async (done = false) => {
-
         const { data: { user } } = await supabase.auth.getUser();
+        try {
 
-        const { data, error } = await supabase.from("tasks")
-            .select()
-            .eq("userID", user.id) // Para que solo salga la tarea del usuario actual
-            .eq("done", done)
+            const { data, error } = await supabase.from("tasks")
+                .select()
+                .eq("userID", user.id) // Para que solo salga la tarea del usuario actual
+                .eq("done", done)
 
-        if (error) throw error;
+            setTasks(data)
+        } catch (error) {
+            console.log(error)
+        }
 
-        setTasks(data)
     }
+
+    
 
 
 
     return <TaskContext.Provider
-        value={{ tasks, getTasks, createTask, addingTask, setValueNull, valueNull ,deleteTask, updateDone, updateTask, showTaskDone, expanded, setExpanded, open, setOpen, date, setDate, month, setMonth }}>
+        value={{ tasks, getTasks, createTask, addingTask, setValueNull, valueNull, deleteTask, updateDone, updateTask, showTaskDone, expanded, setExpanded, open, setOpen, date, setDate, month, setMonth }}>
         {children}
     </TaskContext.Provider>
 }

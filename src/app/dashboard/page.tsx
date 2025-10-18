@@ -1,6 +1,6 @@
 "use client"
 
-import TaskList from '@/components/TaskList'
+import TaskList from '@/components/To-do/TaskList'
 import { useEffect, useState } from 'react'
 import { TaskContextProvider, useTask } from '../context/TaskContext'
 import { Spinner } from '@/components/ui/spinner'

@@ -1,7 +1,7 @@
 
 import { LogOut, ChevronLast, ChevronFirst, FilePlus, User } from "lucide-react"
 import { useContext, createContext, useState } from "react"
-import CreateTask from "./CreateTask"
+import CreateTask from "./To-do/CreateTask"
 import Link from "next/link"
 import {
     Dialog,
@@ -116,7 +116,7 @@ export function SideBarItem({ icon, text, href }) {
 
             {!expanded && (
                 <div
-                    className={`absolute left-full rounded-md px-2 items-center justify-center py-1 ml-6 bg-primary border-1 border-border text-white/80 w-15 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
+                    className={`absolute left-full flex items-center rounded-md px-2 justify-center py-1 ml-6 bg-primary border-1 border-border text-white/80 w-15 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
                 >
                     {text}
                 </div>

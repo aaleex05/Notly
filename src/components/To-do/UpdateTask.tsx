@@ -8,16 +8,16 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { Button } from "./ui/buttonStyle"
+import { Button } from "../ui/buttonStyle"
 import { SquarePen } from "lucide-react"
 import { useTask } from "@/app/context/TaskContext"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
-import { Spinner } from "./ui/spinner"
-import { CalendarComponent, formatDateString } from "./CalendarComp";
+import { Spinner } from "../ui/spinner"
+import { CalendarComponent, formatDateString } from "../CalendarComp";
 import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
 import { CalendarIcon } from "lucide-react";
-import { Calendar } from "./ui/calendar";
+import { Calendar } from "../ui/calendar";
 import { format } from "date-fns"
 
 interface EditForm {

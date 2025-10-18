@@ -1,12 +1,12 @@
 import { useState } from "react"
-import { useTask } from "../app/context/TaskContext";
+import { useTask } from "../../app/context/TaskContext";
 import { toast } from "sonner";
-import { Spinner } from "./ui/spinner";
-import Button from "./ui/buttonStyle";
-import { CalendarComponent, formatDateString } from "./CalendarComp";
+import { Spinner } from "../ui/spinner";
+import Button from "../ui/buttonStyle";
+import { CalendarComponent, formatDateString } from "../CalendarComp";
 import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
 import { CalendarIcon } from "lucide-react";
-import { Calendar } from "./ui/calendar";
+import { Calendar } from "../ui/calendar";
 import { format } from "date-fns"
 
 function TaskForm() {
@@ -42,9 +42,6 @@ function TaskForm() {
             date: null
         })
     }
-
-
-
 
     return (
 
@@ -104,7 +101,7 @@ function TaskForm() {
                         fixedWeeks
                         mode="single"
                         selected={taskData.date ? new Date(taskData.date) : undefined}
-                        onSelect={(date) => setTaskData({ ...taskData, date: date?.toISOString().split('T')[0] || '' })}
+                        onSelect={(date) => setTaskData({ ...taskData, date: date ? date.toISOString() : null})}
                         className="bg-primary border-1 border-border rounded-lg"
                     />
                 </PopoverContent>

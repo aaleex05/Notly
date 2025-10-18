@@ -1,7 +1,7 @@
 import { useTask } from '@/app/context/TaskContext'
 import React, { useState } from 'react'
 import { Trash2, CheckCheck, X, SquarePen } from 'lucide-react'
-import { formatDateString } from './CalendarComp'
+import { formatDateString } from '../CalendarComp'
 import UpdateTask from './UpdateTask'
 import {
     Dialog,
@@ -13,7 +13,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import Button from './ui/buttonStyle'
+import Button from '../ui/buttonStyle'
 import { toast } from 'sonner'
 
 interface taskProps {

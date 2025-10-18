@@ -16,9 +16,10 @@ export const TaskContextProvider = ({ children }) => {
     const [addingTask, setAddingTask] = useState(false)
     const [showTaskDone, setShowTaskDone] = useState(false)
     const [expanded, setExpanded] = useState(true);
-    const [date, setDate] = useState(Date | undefined > (new Date()))
     const [open, setOpen] = useState(false)
-    const [value, setValue] = useState("In 2 days")
+    const [date, setDate] = useState(null)
+    const [month, setMonth] = useState(new Date())
+    const [valueNull, setValueNull] = useState(false)
 
 
     const createTask = async (taskData) => {
@@ -38,10 +39,12 @@ export const TaskContextProvider = ({ children }) => {
                 priority: taskData.priority,
                 userID: user.id,
                 done: false,
+                expirationDate: taskData.date
             })
                 .select();
 
             setTasks([...tasks, ...data])
+            console.log(data)
         } catch (error) {
             console.log(error)
             toast.error("Error al añadir la tarea")
@@ -71,7 +74,7 @@ export const TaskContextProvider = ({ children }) => {
         if (error) toast.error("Error al eliminar la tarea")
     }
 
-    const updateTask = async (idTask, updateDone) => {
+    const updateDone = async (idTask, updateDone) => {
         const { data: { user } } = await supabase.auth.getUser();
         const { data, error } = await supabase
             .from("tasks")
@@ -83,6 +86,20 @@ export const TaskContextProvider = ({ children }) => {
         if (error) toast.error("Error al actualizar la tarea")
 
         setTasks(tasks.filter((task) => task.id != idTask))
+    }
+
+    const updateTask = async (idTask, updateTask) => {
+        const { data: { user } } = await supabase.auth.getUser();
+        const { data, error } = await supabase
+            .from("tasks")
+            .update(updateTask)
+            .eq("userID", user.id)
+            .eq("id", idTask)
+            .select()
+
+        if (error) toast.error("Error al actualizar la tarea")
+
+        setTasks(tasks.map((task) => (task.id === idTask ? { ...task, ...updateTask } : task)))
     }
 
     const getTasks = async (done = false) => {
@@ -101,8 +118,8 @@ export const TaskContextProvider = ({ children }) => {
 
 
 
-    return <TaskContext.Provider 
-    value={{ tasks, getTasks, createTask, addingTask, deleteTask, updateTask, showTaskDone, expanded, setExpanded }}>
+    return <TaskContext.Provider
+        value={{ tasks, getTasks, createTask, addingTask, setValueNull, valueNull ,deleteTask, updateDone, updateTask, showTaskDone, expanded, setExpanded, open, setOpen, date, setDate, month, setMonth }}>
         {children}
     </TaskContext.Provider>
 }

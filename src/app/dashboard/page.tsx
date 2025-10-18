@@ -1,23 +1,17 @@
 "use client"
 
-import FilterTask from '@/components/FilterTask'
 import TaskList from '@/components/TaskList'
 import { useEffect, useState } from 'react'
 import { TaskContextProvider, useTask } from '../context/TaskContext'
 import { Spinner } from '@/components/ui/spinner'
 import { supabase } from '../backend/client'
 import { useRouter } from 'next/navigation'
-import SideBar, { SideBarItem } from '@/components/SideBar'
-import { LayoutDashboard } from 'lucide-react'
 
 export function DashboardContent() {
 
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
   const router = useRouter();
-  const [showTaskDone, setShowTaskDone] = useState(false)
-  const { expanded, setExpanded } = useTask()
-
 
   useEffect(() => {
     const checkUser = async () => {
@@ -67,27 +61,8 @@ export function DashboardContent() {
   }
 
   return (
-    <div className="flex h-screen relative overflow-x-hidden">
-      <SideBar>
-        <SideBarItem icon={<LayoutDashboard />} text="Dashboard" href={"/"} />
-      </SideBar>
-
-      {expanded && (
-        <div 
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
-          onClick={() => setExpanded(false)}
-        />
-      )}
-
-      <main className={`transition-all min-h-screen flex-1 ${
-      expanded ? "ml-82" : "ml-18"
-    }`}>
-        <FilterTask
-          showTaskDone={showTaskDone}
-          setShowTaskDone={setShowTaskDone}
-        />
-        <TaskList done={showTaskDone} />
-      </main>
+    <div className='flex items-center justify-center h-screen'>
+      Inicio
     </div>
 
   )
@@ -96,8 +71,6 @@ export function DashboardContent() {
 export default function Dashboard() {
 
   return (
-    <TaskContextProvider>
-      <DashboardContent />
-    </TaskContextProvider>
+    <DashboardContent />
   )
 }

@@ -46,7 +46,7 @@
 body {
   background-color: #0a0a0a;
   color: white;
- 
+
 }
 
 .gradient-color {
@@ -67,13 +67,21 @@ body {
 
 .dark {
   --background: oklch(0.145 0 0);
-  --border: oklch(1 0 0 / 10%);
+  --border: #373737;
+}
+
+
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

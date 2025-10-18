@@ -28,8 +28,7 @@ function CreateTask({variante, text, size}: CreateTaskProps) {
                 <DialogHeader>
                     <DialogTitle>Crear Tarea</DialogTitle>
                     <DialogDescription>
-                        This action cannot be undone. This will permanently delete your account
-                        and remove your data from our servers.
+                        Rellena el formulario para crear una nueva tarea.
                     </DialogDescription>
                 </DialogHeader>
                 <TaskForm/>

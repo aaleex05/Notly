@@ -1,12 +1,15 @@
 import { useTask } from '@/app/context/TaskContext'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import TaskCard from './TaskCard'
-import { IconFilePlus } from "@tabler/icons-react"
+import { IconFilePlus, IconListCheck } from "@tabler/icons-react"
 import CreateTask from './CreateTask'
+import { Spinner } from './ui/spinner'
+import FilterTask from './FilterTask'
 
 
 function TaskList({ done = false }) {
   const { tasks, getTasks } = useTask()
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getTasks(done)
@@ -18,24 +21,33 @@ function TaskList({ done = false }) {
     status: string,
     priority: string,
     done: boolean,
-    id: number
+    id: number,
+    expirationDate: null
   }
 
   if (tasks.length == 0) {
     return (
-      <div className='flex gap-3 flex-col items-center h-full justify-center'>
+      <div className='flex gap-3 flex-col items-center h-screen justify-center'>
         <div className='bg-[#262626] w-fit p-2 rounded-md'>
-          <IconFilePlus />
+          <IconListCheck />
         </div>
         <h1 className='font-medium text-xl text-white/85'>No hay tareas todavía</h1>
         <div className='text-sm items-center text-center text-white/55'>
           <p>Aún no has creado ningúna tarea.</p>
           <p>Empieza creando tu primera tarea.</p>
         </div>
-        <CreateTask variante="white" text='Crear Tarea' size='default'/>
+        <CreateTask variante="white" text='Crear Tarea' size='default' />
       </div>
     )
-  } else {
+  } else if (!loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Spinner />
+      </div>
+    );
+  }
+  else {
+    // console.log(tasks)
     return (
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-4 p-2.5 sm:p-5 auto-rows-fr'>
         {
@@ -43,6 +55,7 @@ function TaskList({ done = false }) {
             <TaskCard key={task.id} {...task} />
           ))
         }
+
       </div>
     )
   }

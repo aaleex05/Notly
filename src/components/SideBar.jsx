@@ -90,7 +90,7 @@ export default function SideBar({ children }) {
                         className={`flex items-center gap-3 overflow-hidden transition-all ${expanded ? "w-52 " : "w-0"}`}>
                         <User size={25} />
                         <div className="leading-4">
-                            <h4 className="font-semibold">John Doe</h4>
+                            <h4 className="font-semibold">Alex Aperador</h4>
                             <span id="userEmail" className="text-xs text-gray-400"></span>
                         </div>
                     </div>
@@ -112,18 +112,11 @@ export function SideBarItem({ icon, text, href }) {
         font-medium rounded-md cursor-pointer
         transition-colors group bg-primary border-1 border-border text-white/80 hover:text-white hover:bg-[#1c1c1c]"
         >
-            {icon}
-            <span
-
-                className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"
-                    }`}
-            >
-                {text}
-            </span>
+            {expanded ? <span className="flex gap-3 ">{icon} {text}</span> : icon}
 
             {!expanded && (
                 <div
-                    className={`absolute left-full rounded-md px-2 py-1 ml-6 bg-primary border-1 border-border text-white/80 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
+                    className={`absolute left-full rounded-md px-2 items-center justify-center py-1 ml-6 bg-primary border-1 border-border text-white/80 w-15 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
                 >
                     {text}
                 </div>

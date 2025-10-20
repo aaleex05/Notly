@@ -26,19 +26,15 @@ function TaskList({ done = false }) {
 
   if (tasks.length == 0) {
     return (
-      <div className='flex gap-3 flex-col items-center h-screen justify-center'>
-        <div className='bg-[#262626] w-fit p-2 rounded-md'>
-          <IconListCheck />
+      <div className="flex flex-col items-center gap-3 justify-center h-screen text-white/80">
+        <div className="bg-primary border p-6 rounded-full">
+          <IconListCheck size={60} />
         </div>
-        <h1 className='font-medium text-xl text-white/85'>No hay tareas todavía</h1>
-        <div className='text-sm items-center text-center text-white/55'>
-          <p>Aún no has creado ningúna tarea.</p>
-          <p>Empieza creando tu primera tarea.</p>
-        </div>
-        <CreateTask variante="white" text='Crear Tarea' size='default' />
+        <h1 className="text-2xl mb-2 font-semibold">Empieza creando tu primera tarea.</h1>
+        <CreateTask variante="white" text='Crear Tarea' size='default' className=''/>
       </div>
     )
-  } 
+  }
   else {
     // console.log(tasks)
     return (

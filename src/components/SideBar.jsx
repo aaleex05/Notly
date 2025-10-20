@@ -22,6 +22,8 @@ import { useTask } from "@/app/context/TaskContext"
 export default function SideBar({ children }) {
     const { expanded, setExpanded } = useTask()
 
+    const [noUser, setNoUser] = useState(false);
+
 
     const LogOutAlert = () => {
         return (
@@ -57,6 +59,16 @@ export default function SideBar({ children }) {
         }
     };
 
+    const getUserName = async () => {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+            document.getElementById("userName").textContent = user.user_metadata.display_name
+        } else {
+            document.getElementById("userName").textContent = ""
+            setNoUser(true)
+        }
+    }
+
     const getUserEmail = async () => {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
@@ -64,9 +76,9 @@ export default function SideBar({ children }) {
         } else {
             document.getElementById("userEmail").textContent = "No hay email"
         }
-
     }
 
+    getUserName()
     getUserEmail()
 
     return (
@@ -80,19 +92,20 @@ export default function SideBar({ children }) {
                     >
                         {expanded ? <ChevronFirst /> : <ChevronLast />}
                     </button>
-                    {expanded ? <CreateTask text="Crear Tarea" /> : <CreateTask text={<FilePlus />} size="sm" />}
                 </div>
 
                 <hr className="mx-4 border-border" />
-                <ul className="flex-1 px-3 pt-4">{children}</ul>
-                <hr className="border-border mx-4"/>
+
+                <ul className="flex-1 px-3 pt-4">
+                    {children}
+                </ul>
                 <div className={`flex items-center ${expanded ? "p-3" : "py-1 px-2 hover:bg-[#1c1c1c]"} justify-between rounded-lg bg-primary border-1 border-border m-4`}>
                     <div
                         className={`flex items-center gap-3 overflow-hidden transition-all ${expanded ? "w-52 " : "w-0"}`}>
                         <User size={25} />
                         <div className="leading-4">
-                            <h4 className="font-semibold">Alex Aperador</h4>
-                            <span id="userEmail" className="text-xs text-gray-400"></span>
+                            <h4 id="userName" className="font-semibold"></h4>
+                            <h4 id="userEmail" className={`${noUser ? "font-semibold text-sm" : "text-xs text-gray-400"}`}></h4>
                         </div>
                     </div>
                     <LogOutAlert />
@@ -114,7 +127,7 @@ export function SideBarItem({ icon, text, href }) {
         font-medium rounded-md cursor-pointer
         transition-colors group bg-primary border-1 border-border text-white/80 hover:text-white hover:bg-[#1c1c1c]"
             >
-                {expanded ? <span className="flex gap-3 ">{icon} {text}</span> : icon}
+                {expanded ? <span className="flex gap-3">{icon} {text}</span> : icon}
 
                 {!expanded && (
                     <div
@@ -124,10 +137,6 @@ export function SideBarItem({ icon, text, href }) {
                     </div>
                 )}
             </Link>
-
-            <div>
-
-            </div>
         </div>
     )
 }

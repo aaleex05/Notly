@@ -4,9 +4,9 @@ import { toast } from "sonner"
 
 export const NoteContext = createContext()
 
-export const useTask = () => {
+export const useNote = () => {
     const context = useContext(NoteContext)
-    if (!context) throw new Error('useTask tiene que utilizarse con TaskContextProvider')
+    if (!context) throw new Error('useNote tiene que utilizarse con NoteContextProvider')
     return context
 }
 

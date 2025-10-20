@@ -1,8 +1,9 @@
 "use client"
 
-import { useTask } from "@/app/context/NoteContext";
+import { useNote } from "@/app/context/NoteContext";
 import { TextInitial } from "lucide-react";
 import Button from "../ui/buttonStyle";
+import { useState } from "react";
 
 type Note = {
     id: number;
@@ -22,11 +23,13 @@ function truncateWords(text: string, limite: number): string {
 }
 
 export default function NoteCard({ note }: NoteCardProps) {
-    const { selectNote, notes, updateNote } = useTask();
+    const { selectNote, notes, updateNote, currentNoteId } = useNote();
     
     const handleShowNote = () => {
         selectNote(note);
     }
+
+    const isSlected = selectNote && currentNoteId == note.id;
 
     // const startDrag = (e: React.DragEvent<HTMLButtonElement>) => {
     //     e.dataTransfer.setData('noteID', note.id.toString())
@@ -54,7 +57,7 @@ export default function NoteCard({ note }: NoteCardProps) {
                 // draggable={true}
                 // onDragStart={startDrag}
                 onClick={handleShowNote}
-                className="w-full flex gap-2 items-center text-md truncate">
+                className={`w-full flex gap-2 items-center text-md truncate ${isSlected ? "bg-white text-black hover:bg-white/40 hover:text-black" : ""}`}>
                 <TextInitial />{truncateWords(note.title, 5)}
             </Button>
         </div>

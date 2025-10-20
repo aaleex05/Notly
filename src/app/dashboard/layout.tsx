@@ -1,9 +1,10 @@
 "use client"
 
 import SideBar, { SideBarItem } from "@/components/SideBar";
-import { ListChecks, HomeIcon, NotepadText, FilePlus } from "lucide-react";
+import { ListChecks, HomeIcon, NotepadText, FilePlus, ListPlus } from "lucide-react";
 import { TaskContextProvider, useTask } from "../context/TaskContext";
 import CreateTask from "@/components/To-do/CreateTask";
+import Button from "@/components/ui/buttonStyle";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     return (
@@ -14,16 +15,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 }
 
 export function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
-    const { expanded, setExpanded } = useTask()
-    
+    const { expanded, setExpanded, createNote } = useTask()
+
     return (
         <div>
             <div className="flex h-screen relative overflow-x-hidden">
                 <SideBar>
                     <SideBarItem icon={<HomeIcon />} text="Inicio" href={"/dashboard"} />
                     <SideBarItem icon={<ListChecks />} text="To-Do" href={"/dashboard/to-do"} />
-                    <SideBarItem icon={<NotepadText />} text="Notas" href={"/dashboard/notas"} />
-                    
+                    <SideBarItem icon={<NotepadText />} text="Notas" href={"/dashboard/notas"} />                    
                 </SideBar>
 
                 {expanded && (

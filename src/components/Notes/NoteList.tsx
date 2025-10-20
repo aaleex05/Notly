@@ -1,11 +1,11 @@
 "use client"
 
-import { useTask } from "@/app/context/NoteContext";
+import { useNote } from "@/app/context/NoteContext";
 import NoteCard from "./NoteCard";
 import Button from "../ui/buttonStyle";
 
 export default function NotesList() {
-    const { notes, loading } = useTask();
+    const { notes, loading } = useNote();
 
     interface NoteProps {
         id: number;

@@ -10,19 +10,21 @@ import {
 } from "@/components/ui/dialog"
 import Button, { buttonVariants } from "../ui/buttonStyle"
 import TaskForm from "./TaskForm"
+import { ReactNode } from "react"
 
 interface CreateTaskProps {
     variante: "default" | "white" | "outline" | "secondary" | "ghost" | "link"
-    text: string
+    text: string | ReactNode
     size: "default" | "sm" | "lg" | "icon"
+    className: string
 }
 
 
-function CreateTask({variante, text, size}: CreateTaskProps) {
+function CreateTask({variante, text, size, className}: CreateTaskProps) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant={variante} size={size}>{text}</Button>
+                <Button className={className} variant={variante} size={size}>{text}</Button>
             </DialogTrigger>
             <DialogContent className="dark">
                 <DialogHeader>

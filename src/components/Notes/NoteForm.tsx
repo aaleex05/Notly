@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
+import UnderlineExtension from '@tiptap/extension-underline';
 import {
     Bold,
     Italic,
@@ -16,10 +17,14 @@ import {
     Heading1,
     Heading2,
     CloudCheck,
-    Trash2
+    Trash2,
+    Underline,
+    Heading3
 } from "lucide-react";
 import Button from "../ui/buttonStyle";
 import { toast } from "sonner";
+import { IconBlockquote } from "@tabler/icons-react";
+
 
 export default function NoteForm() {
     const {
@@ -49,11 +54,12 @@ export default function NoteForm() {
             Placeholder.configure({
                 placeholder: 'Escribe tu nota aquí...',
             }),
+            UnderlineExtension,
         ],
         content: currentContent || '',
         editorProps: {
             attributes: {
-                class: 'prose prose-sm max-w-none focus:outline-none min-h-[200px] p-4',
+                class: 'editor-prose focus:outline-none min-h-[200px] p-4',
             },
         },
         onUpdate: ({ editor }) => {
@@ -68,12 +74,10 @@ export default function NoteForm() {
     }, [currentNoteId]);
 
     useEffect(() => {
-        // Limpiar timeout anterior
         if (saveTimeoutRef.current) {
             clearTimeout(saveTimeoutRef.current);
         }
 
-        // No guardar si no hay contenido
         if (!currentTitle.trim() && !currentContent.trim()) {
             return;
         }
@@ -93,7 +97,6 @@ export default function NoteForm() {
                     const data = await createNote(noteData);
 
                     if (data && data[0]) {
-                        // Actualizar el currentNoteId después de crear
                         selectNote(data[0]);
                     }
                 }
@@ -116,8 +119,16 @@ export default function NoteForm() {
     }
 
     const handleDeleteNote = () => {
-        deleteNote(currentNoteId)
+        if (!currentNoteId) {
+            toast.error("No hay nota para eliminar");
+            return;
+        }
+        deleteNote(currentNoteId);
+        toast.success("Nota eliminada");
     }
+
+    const stylePickerHover = `p-2 rounded-lg hover:bg-white/20`
+    const stylePicker = 'bg-primary border border-border text-white/80 hover:text-white hover:bg-[#1c1c1c]'
 
     return (
         <div className="flex flex-col gap-4 h-full">
@@ -132,10 +143,10 @@ export default function NoteForm() {
                 />
                 {(currentNoteId || currentTitle || currentContent) && (
                     <div
-                        className={`text-sm w-fit p-1.5 rounded-full transition-colors duration-300 
+                        className={`text-sm w-fit p-1.5 rounded-lg transition-colors duration-300 
                             ${isSaving
-                                ? 'text-white/60 bg-white/40'
-                                : 'text-white/40 bg-white/20'
+                                ? 'text-white/60 bg-[#111111] border'
+                                : 'text-white/40 bg-[#12212] border'
                             }`}
                     >
                         <CloudCheck />
@@ -147,7 +158,7 @@ export default function NoteForm() {
                 <button
                     onClick={() => editor.chain().focus().undo().run()}
                     disabled={!editor.can().undo()}
-                    className="p-2 rounded-full hover:bg-white/40 disabled:opacity-30"
+                    className={`${stylePickerHover} disabled:opacity-30`}
                     title="Deshacer (Ctrl+Z)"
                 >
                     <Undo2 size={18} />
@@ -156,7 +167,7 @@ export default function NoteForm() {
                 <button
                     onClick={() => editor.chain().focus().redo().run()}
                     disabled={!editor.can().redo()}
-                    className="p-2 rounded-full hover:bg-white/40 disabled:opacity-30"
+                    className={`${stylePickerHover} disabled:opacity-30`}
                     title="Rehacer (Ctrl+Y)"
                 >
                     <Redo2 size={18} />
@@ -164,8 +175,7 @@ export default function NoteForm() {
 
                 <button
                     onClick={() => editor.chain().focus().toggleBold().run()}
-                    className={`p-2 rounded-full hover:bg-white/40 ${editor.isActive('bold') ? 'bg-white/40' : ''
-                        }`}
+                    className={`${stylePickerHover} ${editor.isActive('bold') ? stylePicker : ''}`}
                     title="Negrita (Ctrl+B)"
                 >
                     <Bold size={18} />
@@ -173,17 +183,23 @@ export default function NoteForm() {
 
                 <button
                     onClick={() => editor.chain().focus().toggleItalic().run()}
-                    className={`p-2 rounded-full hover:bg-white/40 ${editor.isActive('italic') ? 'bg-white/40' : ''
-                        }`}
+                    className={`${stylePickerHover} ${editor.isActive('italic') ? stylePicker : ''}`}
                     title="Cursiva (Ctrl+I)"
                 >
                     <Italic size={18} />
                 </button>
 
                 <button
+                    onClick={() => editor.chain().focus().toggleUnderline().run()}
+                    className={`${stylePickerHover} ${editor.isActive('underline') ? stylePicker : ''}`}
+                    title="Subrayado"
+                >
+                    <Underline size={18} />
+                </button>
+
+                <button
                     onClick={() => editor.chain().focus().toggleStrike().run()}
-                    className={`p-2 rounded-full hover:bg-white/40 ${editor.isActive('strike') ? 'bg-white/40' : ''
-                        }`}
+                    className={`${stylePickerHover} ${editor.isActive('strike') ? stylePicker : ''}`}
                     title="Tachado"
                 >
                     <Strikethrough size={18} />
@@ -191,26 +207,23 @@ export default function NoteForm() {
 
                 <button
                     onClick={() => editor.chain().focus().toggleBulletList().run()}
-                    className={`p-2 rounded-full hover:bg-white/40 ${editor.isActive('bulletList') ? 'bg-white/40' : ''
-                        }`}
-                    title="Lista con viñetas"
+                    className={`${stylePickerHover} ${editor.isActive('bulletList') ? stylePicker : ''}`}
+                    title="Lista desordenada"
                 >
                     <List size={18} />
                 </button>
 
                 <button
                     onClick={() => editor.chain().focus().toggleOrderedList().run()}
-                    className={`p-2 rounded-full hover:bg-white/40 ${editor.isActive('orderedList') ? 'bg-white/40' : ''
-                        }`}
-                    title="Lista numerada"
+                    className={`${stylePickerHover} ${editor.isActive('orderedList') ? stylePicker : ''}`}
+                    title="Lista ordenada"
                 >
                     <ListOrdered size={18} />
                 </button>
 
                 <button
                     onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-                    className={`p-2 rounded-full hover:bg-white/40 ${editor.isActive('heading', { level: 1 }) ? 'bg-white/40' : ''
-                        }`}
+                    className={`${stylePickerHover} ${editor.isActive('heading', { level: 1 }) ? stylePicker : ''}`}
                     title="Título 1"
                 >
                     <Heading1 size={18} />
@@ -218,20 +231,47 @@ export default function NoteForm() {
 
                 <button
                     onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-                    className={`p-2 rounded-full hover:bg-white/40 ${editor.isActive('heading', { level: 2 }) ? 'bg-white/40' : ''
-                        }`}
+                    className={`${stylePickerHover} ${editor.isActive('heading', { level: 2 }) ? stylePicker : ''}`}
                     title="Título 2"
                 >
                     <Heading2 size={18} />
                 </button>
 
+                <button
+                    onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+                    className={`${stylePickerHover} ${editor.isActive('heading', { level: 3 }) ? stylePicker : ''}`}
+                    title="Título 3"
+                >
+                    <Heading3 size={18} />
+                </button>
+
+                <button
+                    onClick={() => editor.chain().focus().toggleBlockquote().run()}
+                    className={`${stylePickerHover} ${editor.isActive('blockquote') ? stylePicker : ''}`}
+                    title="Cita"
+                >
+                    <IconBlockquote size={18} />
+                </button>
+
+                <button
+                    onClick={() => editor.chain().focus().setHorizontalRule().run()}
+                    className={`${stylePickerHover} ${editor.isActive('horizontalRule') ? stylePicker : ''}`}
+                    title=""
+                >
+                    <IconBlockquote size={18} />
+                </button>
+
                 <div className="ml-auto flex items-center gap-2">
                     <Button onClick={newNote}>Nueva nota</Button>
-                    <Button onClick={handleDeleteNote}><Trash2/></Button>
+                    {currentNoteId && (
+                        <Button title="Eliminar nota" onClick={handleDeleteNote}>
+                            <Trash2 size={22} />
+                        </Button>
+                    )}
                 </div>
             </div>
 
-            <div className="border rounded-lg h-full overflow-y-auto">
+            <div className="border rounded-lg h-full scroll-smooth p-0 no-scrollbar overflow-y-auto">
                 <EditorContent editor={editor} />
             </div>
         </div>

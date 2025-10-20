@@ -71,13 +71,85 @@ body {
 }
 
 
-
 input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
   cursor: pointer;
 }
 
+
+@layer components {
+  .editor-prose {
+    @apply text-white/80;
+    @apply leading-4
+  }
+
+  .editor-prose h1 {
+    @apply text-4xl font-extrabold text-white mt-4 mb-2;
+  }
+
+  .editor-prose h2 {
+    @apply text-3xl font-bold text-white mt-3 mb-2;
+  }
+
+  .editor-prose h3 {
+    @apply text-2xl font-semibold text-white mt-2 mb-2;
+  }
+
+  .editor-prose ul {
+    @apply list-disc pl-6 my-2;
+  }
+
+  .editor-prose ol {
+    @apply list-decimal pl-6 my-2;
+  }
+
+  .editor-prose li {
+    @apply my-1;
+  }
+
+  .editor-prose blockquote {
+    @apply border-l-4 border-white/40 pl-4 italic text-white/50 my-4;
+  }
+
+  .editor-prose strong {
+    @apply font-bold text-white;
+  }
+
+  .editor-prose hr{
+    @apply border-b-1 border-white/50 my-4;
+  }
+
+  
+
+
+  .editor-prose code {
+    @apply bg-gray-800 text-gray-200 px-1.5 py-0.5 rounded text-sm font-mono;
+  }
+
+  .editor-prose pre {
+    @apply bg-gray-900 text-white p-4 rounded-lg overflow-x-auto my-4;
+  }
+
+  .editor-prose pre code {
+    @apply bg-transparent p-0;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE y Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+}
+
 @layer base {
+
   * {
     @apply border-border outline-ring/50;
   }

@@ -4,12 +4,15 @@ import { useTask } from "@/app/context/NoteContext";
 import { TextInitial } from "lucide-react";
 import Button from "../ui/buttonStyle";
 
+type Note = {
+    id: number;
+    title: string;
+    content: string;
+    list?: number;
+}
+
 interface NoteCardProps {
-    note: {
-        id: number;
-        title: string;
-        content: string;
-    }
+    note: Note;
 }
 
 function truncateWords(text: string, limite: number): string {
@@ -18,19 +21,42 @@ function truncateWords(text: string, limite: number): string {
     return palabras.slice(0, limite).join(' ') + '...';
 }
 
-
-
 export default function NoteCard({ note }: NoteCardProps) {
-    const { selectNote  } = useTask();
+    const { selectNote, notes, updateNote } = useTask();
+    
     const handleShowNote = () => {
         selectNote(note);
     }
 
+    // const startDrag = (e: React.DragEvent<HTMLButtonElement>) => {
+    //     e.dataTransfer.setData('noteID', note.id.toString())
+    //     console.log(note)
+    // }
+    
+    // const draggInOver = (e: React.DragEvent<HTMLDivElement>) => {
+    //     e.preventDefault()
+    // }
+
+    // const onDrop = (e: React.DragEvent<HTMLDivElement>, list: number) => {
+    //     e.preventDefault()
+    //     const noteID = Number(e.dataTransfer.getData("noteID"))
+    //     const item = notes.find((n: Note) => n.id === noteID)
+        
+    //     if (item) {
+    //         const updatedNote = { ...item, list: list }
+    //         updateNote(updatedNote)
+    //     }
+    // }
+
     return (
         <div>
             <Button 
-            onClick={handleShowNote}
-            className="w-full flex gap-2 items-center text-md truncate"><TextInitial />{truncateWords(note.title, 5)}</Button>
+                // draggable={true}
+                // onDragStart={startDrag}
+                onClick={handleShowNote}
+                className="w-full flex gap-2 items-center text-md truncate">
+                <TextInitial />{truncateWords(note.title, 5)}
+            </Button>
         </div>
     );
 }

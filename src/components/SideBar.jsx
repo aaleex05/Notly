@@ -85,6 +85,7 @@ export default function SideBar({ children }) {
 
                 <hr className="mx-4 border-border" />
                 <ul className="flex-1 px-3 pt-4">{children}</ul>
+                <hr className="border-border mx-4"/>
                 <div className={`flex items-center ${expanded ? "p-3" : "py-1 px-2 hover:bg-[#1c1c1c]"} justify-between rounded-lg bg-primary border-1 border-border m-4`}>
                     <div
                         className={`flex items-center gap-3 overflow-hidden transition-all ${expanded ? "w-52 " : "w-0"}`}>
@@ -105,22 +106,28 @@ export function SideBarItem({ icon, text, href }) {
     const { expanded } = useTask()
 
     return (
-        <Link
-            href={href}
-            className="
+        <div>
+            <Link
+                href={href}
+                className="
         relative flex items-center py-2 px-3 my-1
         font-medium rounded-md cursor-pointer
         transition-colors group bg-primary border-1 border-border text-white/80 hover:text-white hover:bg-[#1c1c1c]"
-        >
-            {expanded ? <span className="flex gap-3 ">{icon} {text}</span> : icon}
+            >
+                {expanded ? <span className="flex gap-3 ">{icon} {text}</span> : icon}
 
-            {!expanded && (
-                <div
-                    className={`absolute left-full flex items-center rounded-md px-2 justify-center py-1 ml-6 bg-primary border-1 border-border text-white/80 w-15 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
-                >
-                    {text}
-                </div>
-            )}
-        </Link>
+                {!expanded && (
+                    <div
+                        className={`absolute left-full flex items-center rounded-md px-2 justify-center py-1 ml-6 bg-primary border-1 border-border text-white/80 w-15 text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0`}
+                    >
+                        {text}
+                    </div>
+                )}
+            </Link>
+
+            <div>
+
+            </div>
+        </div>
     )
 }

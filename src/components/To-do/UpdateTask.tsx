@@ -14,12 +14,14 @@ import { useTask } from "@/app/context/TaskContext"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
 import { Spinner } from "../ui/spinner"
-import { CalendarComponent, formatDateString } from "../CalendarComp";
-import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "../ui/calendar";
+import { formatDateString } from "../CalendarComp"
+import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover"
+import { CalendarIcon } from "lucide-react"
+import { Calendar } from "../ui/calendar"
 import { format } from "date-fns"
 import { useFolder } from "@/app/context/FolderContext"
+import { useParams } from "next/navigation"
+import { supabase } from "@/app/backend/client"
 
 interface EditForm {
     name: string;
@@ -30,12 +32,12 @@ interface EditForm {
     folderID: string;
 }
 
-
 function UpdateTask(props: { idTask?: any, task?: any }) {
 
-    const { updateTask, date } = useTask()
+    const { updateTask } = useTask()
     const { idTask, task } = props
-    const { setTaskData, folders } = useFolder()
+    const { folders, FolderContent } = useFolder()
+    const params = useParams() 
 
     const [loading, setLoading] = useState(false)
     const [update, setUpdate] = useState<EditForm>({
@@ -53,20 +55,31 @@ function UpdateTask(props: { idTask?: any, task?: any }) {
     }
 
     useEffect(() => {
-        if (task) {
-            setUpdate({
-                name: task.name ?? '',
-                description: task.description ?? '',
-                status: String(task.status ?? '1'),
-                priority: String(task.priority ?? '1'),
-                date: task.date ?? null,
-                folderID: task.folderID ?? '',
-            })
+        const loadTaskData = async () => {
+            if (task && idTask) {
+                // Obtener carpeta asociada
+                const { data: folderData } = await supabase
+                    .from("folder_tasks")
+                    .select("folder_id")
+                    .eq("task_id", idTask)
+                    .maybeSingle();
+
+                // Establecer todo el estado
+                setUpdate({
+                    name: task.name ?? '',
+                    description: task.description ?? '',
+                    status: String(task.status ?? '1'),
+                    priority: String(task.priority ?? '1'),
+                    date: task.expirationDate ?? null,
+                    folderID: folderData ? String(folderData.folder_id) : ''
+                });
+            }
         }
-    }, [task])
+
+        loadTaskData();
+    }, [task, idTask])
 
     const handleUpdate = async () => {
-
         setLoading(true)
         try {
             const valuesUpdate = {
@@ -77,9 +90,13 @@ function UpdateTask(props: { idTask?: any, task?: any }) {
                 expirationDate: update.date,
                 folderID: update.folderID,
             }
+            
             await updateTask(idTask, valuesUpdate)
-            toast.success('Tarea actualizada')
-            console.log(update)
+            
+            // Recargar el contenido de la carpeta si esta en una página de carpeta
+            if (params?.id) {
+                await FolderContent(Number(params.id))
+            }
 
         } catch (error) {
             console.error(error)
@@ -88,8 +105,6 @@ function UpdateTask(props: { idTask?: any, task?: any }) {
             setLoading(false)
         }
     }
-
-
 
     return (
         <Dialog>
@@ -142,18 +157,16 @@ function UpdateTask(props: { idTask?: any, task?: any }) {
                     </select>
 
                     <select
-                        name="folders"
-                        defaultValue="default"
+                        value={update.folderID}
                         onChange={(e) => setUpdate({ ...update, folderID: e.target.value })}
                         className="p-2 rounded-lg border-1 border-border py-2 bg-primary focus:outline-2 focus:border-1 focus:border-[#797979] focus:outline-[#525252]"
                     >
-                        <option value="default" disabled className="placeholder:text-amber-300">Seleccionar carpeta (opcional)</option>
+                        <option value="">Sin carpeta</option>
                         {
                             folders.map((folder: FolderProps) => (
                                 <option key={folder.id} value={folder.id}>{folder.name}</option>
                             ))
                         }
-
                     </select>
 
                     <Popover>

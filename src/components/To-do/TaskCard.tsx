@@ -24,6 +24,7 @@ interface taskProps {
     done: boolean,
     id: any,
     expirationDate: null
+    foldereID?: number
 }
 
 function TaskCard(task: taskProps) {

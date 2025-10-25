@@ -30,8 +30,6 @@ export const FolderContextProvider = ({ children }) => {
         try {
             const { error, data } = await supabase.from("folders").insert({
                 name: folderData.name,
-                idNote: folderData.idNotes,
-                idTask: folderData.idTasks,
                 userID: user.id,
             })
                 .select();
@@ -82,7 +80,7 @@ export const FolderContextProvider = ({ children }) => {
         }
     }
 
-    
+
 
     const FolderContent = useCallback(async (idPage) => {
         setLoading(true);
@@ -92,9 +90,16 @@ export const FolderContextProvider = ({ children }) => {
                 console.log("No se pudo obtener el usuario autenticado");
                 return;
             }
+
             const { data, error } = await supabase
                 .from("folders")
-                .select("*")
+                .select(`
+                *,
+                folder_tasks (
+                    task_id,
+                    tasks (*)
+                )
+            `)
                 .eq("userID", user.id)
                 .eq("id", idPage)
                 .single();
@@ -139,6 +144,25 @@ export const FolderContextProvider = ({ children }) => {
         }
     }
 
+    const getFolderTasks = async (folderId) => {
+        try {
+            const { data, error } = await supabase
+                .from("folder_tasks")
+                .select(`
+                task_id,
+                tasks (*)
+            `)
+                .eq("folder_id", folderId);
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            console.log(error)
+            toast.error("Error al obtener tareas de la carpeta")
+            return [];
+        }
+    }
+
     const getFolders = async () => {
         setLoading(true);
         const { data: { user } } = await supabase.auth.getUser()
@@ -168,7 +192,7 @@ export const FolderContextProvider = ({ children }) => {
 
     return (
         <FolderContext.Provider
-            value={{ 
+            value={{
                 folders,
                 setFolders,
                 createFolder,
@@ -177,7 +201,8 @@ export const FolderContextProvider = ({ children }) => {
                 getFolders,
                 FolderContent,
                 folderContent,
-                loading
+                loading,
+                getFolderTasks
             }}>
             {children}
         </FolderContext.Provider>

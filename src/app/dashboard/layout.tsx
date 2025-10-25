@@ -40,7 +40,7 @@ export function DashboardLayoutContent({ children }: { children: React.ReactNode
                     />
                 )}
 
-                <main className={`transition-all min-h-screen flex-1 ${expanded ? "ml-82" : "ml-18"}`}>
+                <main className={`transition-all min-h-screen flex-1 ${expanded ? "ml-80" : "ml-18"}`}>
                     {children}
                 </main>
             </div>

@@ -21,13 +21,12 @@ import {
     Underline,
     Heading3,
     NotebookPenIcon,
-    Folder,
-    Plus
+    X,
+    SeparatorHorizontal
 } from "lucide-react";
 import Button from "../ui/buttonStyle";
 import { toast } from "sonner";
 import { IconBlockquote } from "@tabler/icons-react";
-import { useFolder } from "@/app/context/FolderContext";
 
 export default function NoteForm() {
     const {
@@ -36,21 +35,15 @@ export default function NoteForm() {
         currentContent,
         setCurrentTitle,
         setCurrentContent,
-        setCurrentFolder,
         createNote,
         updateNote,
         newNote,
         selectNote,
         deleteNote,
         notes,
+        mostrarNota,
+        setMostrarNota
     } = useNote();
-
-    const { folders } = useFolder();
-
-    interface FolderProps {
-        id: number;
-        name: string;
-    }
 
     const [isSaving, setIsSaving] = useState(false);
     const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -101,7 +94,7 @@ export default function NoteForm() {
                 const noteData = {
                     title: currentTitle || "Sin título",
                     content: currentContent,
-                    
+
                 };
 
                 if (currentNoteId) {
@@ -164,131 +157,18 @@ export default function NoteForm() {
                         value={currentTitle}
                         onChange={(e) => setCurrentTitle(e.target.value)}
                         maxLength={50}
-                        className="text-2xl w-full font-bold border-none outline-none focus:ring-0 p-2"
+                        className="text-2xl border-none w-full outline-none font-bold focus:ring-0 p-2"
                     />
-                    {(currentNoteId || currentTitle || currentContent) && (
-                        <div
-                            className={`text-sm w-fit p-1.5 rounded-lg transition-colors duration-300 
-                            ${isSaving
-                                    ? 'text-white/60 bg-[#111111] border'
-                                    : 'text-white/40 bg-[#12212] border'
-                                }`}
+                    <div className="ml-auto flex items-center gap-2 ">
+                        <Button
+                            onClick={() => setMostrarNota(!mostrarNota)}
+                            className="text-sm w-fit p-2 rounded-lg transition-colors duration-300"
+                            title="Cerrar nota"
                         >
-                            <CloudCheck />
-                        </div>
-                    )}
-                </div>
-
-                <div className="flex flex-wrap gap-1 border-b pb-2">
-                    <button
-                        onClick={() => editor.chain().focus().undo().run()}
-                        disabled={!editor.can().undo()}
-                        className={`${stylePickerHover} disabled:opacity-30`}
-                        title="Deshacer (Ctrl+Z)"
-                    >
-                        <Undo2 size={18} />
-                    </button>
-
-                    <button
-                        onClick={() => editor.chain().focus().redo().run()}
-                        disabled={!editor.can().redo()}
-                        className={`${stylePickerHover} disabled:opacity-30`}
-                        title="Rehacer (Ctrl+Y)"
-                    >
-                        <Redo2 size={18} />
-                    </button>
-
-                    <button
-                        onClick={() => editor.chain().focus().toggleBold().run()}
-                        className={`${stylePickerHover} ${editor.isActive('bold') ? stylePicker : ''}`}
-                        title="Negrita (Ctrl+B)"
-                    >
-                        <Bold size={18} />
-                    </button>
-
-                    <button
-                        onClick={() => editor.chain().focus().toggleItalic().run()}
-                        className={`${stylePickerHover} ${editor.isActive('italic') ? stylePicker : ''}`}
-                        title="Cursiva (Ctrl+I)"
-                    >
-                        <Italic size={18} />
-                    </button>
-
-                    <button
-                        onClick={() => editor.chain().focus().toggleUnderline().run()}
-                        className={`${stylePickerHover} ${editor.isActive('underline') ? stylePicker : ''}`}
-                        title="Subrayado"
-                    >
-                        <Underline size={18} />
-                    </button>
-
-                    <button
-                        onClick={() => editor.chain().focus().toggleStrike().run()}
-                        className={`${stylePickerHover} ${editor.isActive('strike') ? stylePicker : ''}`}
-                        title="Tachado"
-                    >
-                        <Strikethrough size={18} />
-                    </button>
-
-                    <button
-                        onClick={() => editor.chain().focus().toggleBulletList().run()}
-                        className={`${stylePickerHover} ${editor.isActive('bulletList') ? stylePicker : ''}`}
-                        title="Lista desordenada"
-                    >
-                        <List size={18} />
-                    </button>
-
-                    <button
-                        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-                        className={`${stylePickerHover} ${editor.isActive('orderedList') ? stylePicker : ''}`}
-                        title="Lista ordenada"
-                    >
-                        <ListOrdered size={18} />
-                    </button>
-
-                    <button
-                        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-                        className={`${stylePickerHover} ${editor.isActive('heading', { level: 1 }) ? stylePicker : ''}`}
-                        title="Título 1"
-                    >
-                        <Heading1 size={18} />
-                    </button>
-
-                    <button
-                        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-                        className={`${stylePickerHover} ${editor.isActive('heading', { level: 2 }) ? stylePicker : ''}`}
-                        title="Título 2"
-                    >
-                        <Heading2 size={18} />
-                    </button>
-
-                    <button
-                        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-                        className={`${stylePickerHover} ${editor.isActive('heading', { level: 3 }) ? stylePicker : ''}`}
-                        title="Título 3"
-                    >
-                        <Heading3 size={18} />
-                    </button>
-
-                    <button
-                        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-                        className={`${stylePickerHover} ${editor.isActive('blockquote') ? stylePicker : ''}`}
-                        title="Cita"
-                    >
-                        <IconBlockquote size={18} />
-                    </button>
-
-                    <button
-                        onClick={() => editor.chain().focus().setHorizontalRule().run()}
-                        className={`${stylePickerHover} ${editor.isActive('horizontalRule') ? stylePicker : ''}`}
-                        title=""
-                    >
-                        <IconBlockquote size={18} />
-                    </button>
-
-                    <div className="ml-auto flex items-center gap-2">
-                        <Button title="Nueva nota" onClick={newNote}><Plus size={18} /></Button>
-                        <select
+                            <X />
+                        </Button>
+                        <Button title="Nueva nota" className="text-sm w-fit p-2 rounded-lg transition-colors duration-300" onClick={newNote}><NotebookPenIcon /></Button>
+                        {/* <select
                             name="folders"
                             defaultValue="default"
                             onChange={(e) => setCurrentFolder(e.target.value)}
@@ -301,13 +181,137 @@ export default function NoteForm() {
                                 ))
                             }
 
-                        </select>
+                        </select> */}
                         {currentNoteId && (
-                            <Button title="Eliminar nota" onClick={handleDeleteNote}>
-                                <Trash2 size={22} />
+                            <Button title="Eliminar nota" className="text-sm w-fit p-2 rounded-lg transition-colors duration-300" onClick={handleDeleteNote}>
+                                <Trash2 />
                             </Button>
                         )}
                     </div>
+                </div>
+
+
+                <div className="flex justify-between items-center gap-2">
+                    <div className="flex flex-wrap gap-1 p-2 w-full bg-primary rounded-lg border border-border">
+                        <button
+                            onClick={() => editor.chain().focus().undo().run()}
+                            disabled={!editor.can().undo()}
+                            className={`${stylePickerHover} disabled:opacity-30`}
+                            title="Deshacer (Ctrl+Z)"
+                        >
+                            <Undo2 size={18} />
+                        </button>
+
+                        <button
+                            onClick={() => editor.chain().focus().redo().run()}
+                            disabled={!editor.can().redo()}
+                            className={`${stylePickerHover} disabled:opacity-30`}
+                            title="Rehacer (Ctrl+Y)"
+                        >
+                            <Redo2 size={18} />
+                        </button>
+
+                        <button
+                            onClick={() => editor.chain().focus().toggleBold().run()}
+                            className={`${stylePickerHover} ${editor.isActive('bold') ? stylePicker : ''}`}
+                            title="Negrita (Ctrl+B)"
+                        >
+                            <Bold size={18} />
+                        </button>
+
+                        <button
+                            onClick={() => editor.chain().focus().toggleItalic().run()}
+                            className={`${stylePickerHover} ${editor.isActive('italic') ? stylePicker : ''}`}
+                            title="Cursiva (Ctrl+I)"
+                        >
+                            <Italic size={18} />
+                        </button>
+
+                        <button
+                            onClick={() => editor.chain().focus().toggleUnderline().run()}
+                            className={`${stylePickerHover} ${editor.isActive('underline') ? stylePicker : ''}`}
+                            title="Subrayado"
+                        >
+                            <Underline size={18} />
+                        </button>
+
+                        <button
+                            onClick={() => editor.chain().focus().toggleStrike().run()}
+                            className={`${stylePickerHover} ${editor.isActive('strike') ? stylePicker : ''}`}
+                            title="Tachado"
+                        >
+                            <Strikethrough size={18} />
+                        </button>
+
+                        <button
+                            onClick={() => editor.chain().focus().toggleBulletList().run()}
+                            className={`${stylePickerHover} ${editor.isActive('bulletList') ? stylePicker : ''}`}
+                            title="Lista desordenada"
+                        >
+                            <List size={18} />
+                        </button>
+
+                        <button
+                            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+                            className={`${stylePickerHover} ${editor.isActive('orderedList') ? stylePicker : ''}`}
+                            title="Lista ordenada"
+                        >
+                            <ListOrdered size={18} />
+                        </button>
+
+                        <button
+                            onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+                            className={`${stylePickerHover} ${editor.isActive('heading', { level: 1 }) ? stylePicker : ''}`}
+                            title="Título 1"
+                        >
+                            <Heading1 size={18} />
+                        </button>
+
+                        <button
+                            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+                            className={`${stylePickerHover} ${editor.isActive('heading', { level: 2 }) ? stylePicker : ''}`}
+                            title="Título 2"
+                        >
+                            <Heading2 size={18} />
+                        </button>
+
+                        <button
+                            onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+                            className={`${stylePickerHover} ${editor.isActive('heading', { level: 3 }) ? stylePicker : ''}`}
+                            title="Título 3"
+                        >
+                            <Heading3 size={18} />
+                        </button>
+
+                        <button
+                            onClick={() => editor.chain().focus().toggleBlockquote().run()}
+                            className={`${stylePickerHover} ${editor.isActive('blockquote') ? stylePicker : ''}`}
+                            title="Cita"
+                        >
+                            <IconBlockquote size={18} />
+                        </button>
+
+                        <button
+                            onClick={() => editor.chain().focus().setHorizontalRule().run()}
+                            className={`${stylePickerHover} ${editor.isActive('horizontalRule') ? stylePicker : ''}`}
+                            title="Separador horizontal"
+                        >
+                            <SeparatorHorizontal size={18} />
+                        </button>
+
+
+                    </div>
+                    {(currentNoteId || currentTitle || currentContent) && (
+                        <div
+                            className={`text-sm w-fit h-full flex items-center p-1.5 rounded-lg transition-colors duration-300 
+                            ${isSaving
+                                    ? 'text-white/60 bg-[#111111] border'
+                                    : 'text-white/40 bg-[#12212] border'
+                                }`}
+                        >
+                            <CloudCheck />
+                        </div>
+                    )}
                 </div>
 
                 <div className="border rounded-lg h-full scroll-smooth p-0 no-scrollbar overflow-y-auto">

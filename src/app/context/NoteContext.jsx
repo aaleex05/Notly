@@ -17,6 +17,7 @@ export const NoteContextProvider = ({ children }) => {
     const [currentTitle, setCurrentTitle] = useState("")
     const [currentContent, setCurrentContent] = useState("")
     const [currenFolder, setCurrentFolder] = useState("")
+    const [ mostrarNota, setMostrarNota ] = useState(false);
     useEffect(() => {
         getNotes();
     }, []);
@@ -160,7 +161,9 @@ export const NoteContextProvider = ({ children }) => {
                 setCurrentContent,
                 selectNote,
                 newNote,
-                deleteNote
+                deleteNote,
+                mostrarNota,
+                setMostrarNota
                 }}>
             {children}
         </NoteContext.Provider>

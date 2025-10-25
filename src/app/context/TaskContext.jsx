@@ -46,10 +46,11 @@ export const TaskContextProvider = ({ children }) => {
                 .select();
             if (taskData.folderID && taskData.folderID !== 0 && data && data[0]) {
                 const { error: folderError } = await supabase
-                    .from("folders")
-                    .update({ idTasks: data[0].id })
-                    .eq("id", taskData.folderID)
-                    .eq("userID", user.id);
+                    .from("folder_tasks")
+                    .insert({
+                        folder_id: taskData.folderID,
+                        task_id: data[0].id
+                    });
 
                 if (folderError) {
                     console.error("Error al relacionar con carpeta:", folderError);
@@ -103,16 +104,54 @@ export const TaskContextProvider = ({ children }) => {
 
     const updateTask = async (idTask, updateTask) => {
         const { data: { user } } = await supabase.auth.getUser();
-        const { data, error } = await supabase
-            .from("tasks")
-            .update(updateTask)
-            .eq("userID", user.id)
-            .eq("id", idTask)
-            .select()
+        try {
+            const { folderID, ...taskData } = updateTask;
 
-        if (error) toast.error("Error al actualizar la tarea")
+            const { data, error } = await supabase
+                .from("tasks")
+                .update(taskData)
+                .eq("userID", user.id)
+                .eq("id", idTask)
+                .select()
+                .single();
 
-        setTasks(tasks.map((task) => (task.id === idTask ? { ...task, ...updateTask } : task)))
+            if (error) throw error;
+
+            if (folderID !== undefined && folderID !== '') {
+                await supabase
+                    .from("folder_tasks")
+                    .delete()
+                    .eq("task_id", idTask);
+
+                if (folderID && folderID !== '0') {
+                    const { error: relationError } = await supabase
+                        .from("folder_tasks")
+                        .insert({
+                            folder_id: parseInt(folderID),
+                            task_id: idTask
+                        });
+
+                    if (relationError) {
+                        console.error("Error al actualizar relación con carpeta:", relationError);
+                        toast.error("Tarea actualizada pero error al cambiar carpeta");
+                    }
+                }
+            }
+
+            setTasks(prevTasks =>
+                prevTasks.map((task) =>
+                    task.id === idTask ? { ...task, ...data } : task
+                )
+            )
+
+            toast.success("Tarea actualizada correctamente");
+            return data;
+
+        } catch (error) {
+            console.error(error);
+            toast.error("Error al actualizar la tarea")
+            throw error;
+        }
     }
 
     const getTasks = async (done = false) => {

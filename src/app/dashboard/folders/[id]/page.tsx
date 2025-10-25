@@ -4,6 +4,9 @@ import { FolderContextProvider, useFolder } from "@/app/context/FolderContext"
 import { Spinner } from "@/components/ui/spinner"
 import { useTask } from "@/app/context/TaskContext"
 import TaskCard from "@/components/To-do/TaskCard"
+import CreateTask from "@/components/To-do/CreateTask"
+import { Folder } from "lucide-react"
+import Button from "@/components/ui/buttonStyle"
 
 export default function FolderPage({ params }: { params: Promise<{ id: number }> }) {
     const { id } = use(params)
@@ -13,11 +16,6 @@ export default function FolderPage({ params }: { params: Promise<{ id: number }>
 }
 
 function FolderPageContentClient({ id }: { id: number }) {
-    interface FolderContentProps {
-        id: number;
-        name: string;
-        idTasks: number[];
-    }
 
     interface taskProps {
         name: string,
@@ -30,11 +28,9 @@ function FolderPageContentClient({ id }: { id: number }) {
     }
 
     const { FolderContent, folderContent, loading } = useFolder()
-    const { tasks, getTasks } = useTask()
 
     useEffect(() => {
         FolderContent(id)
-        getTasks()
     }, [id])
 
     if (loading) {
@@ -51,28 +47,37 @@ function FolderPageContentClient({ id }: { id: number }) {
         )
     }
 
-    const currentFolder = folderContent[0];
-    const taskIds = currentFolder?.idTasks || []; 
 
-    const folderTasks = tasks.filter((task: taskProps) => 
-        taskIds.includes(task.id)
-    );
+    const tasksToShow = folderContent[0]?.folder_tasks?.map(
+        (relation: any) => relation.tasks
+    ) || []
+
+    if (tasksToShow.length === 0) {
+        return (
+            <div className="flex flex-col items-center gap-3 justify-center h-screen text-white/80">
+                <div className="bg-primary border p-6 rounded-full">
+                    <Folder size={60} />
+                </div>
+                <h1 className="text-2xl mb-2 font-semibold">No hay ninguna tarea en esta carpeta.</h1>
+                <CreateTask>
+                    <Button variant="white" size='default' className='flex gap-3 items-center text-md'>
+                        Crear tarea
+                    </Button>
+                </CreateTask>
+            </div>
+        )
+    }
 
     return (
         <div>
-            <h1 className="text-3xl font-bold mb-5">
-                {currentFolder?.name || `Carpeta ${id}`}
-            </h1>
-            
-            {folderTasks.length === 0 ? (
-                <p className="text-gray-500">No hay tareas en esta carpeta</p>
-            ) : (
-                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-4 p-2.5 sm:p-5 auto-rows-fr'>
-                    {folderTasks.map((task: taskProps) => (
-                        <TaskCard key={task.id} {...task} />
-                    ))}
-                </div>
-            )}
+            <h1 className="text-3xl font-bold mb-5">Carpeta: {folderContent[0].name}</h1>
+
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-4 p-2.5 sm:p-5 auto-rows-fr'>
+                {tasksToShow.map((task: taskProps) => (
+                    <TaskCard key={task.id} {...task} />
+                ))}
+            </div>
+
         </div>
     )
 }

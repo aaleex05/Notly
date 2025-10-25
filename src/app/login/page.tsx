@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "../backend/client";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
+import Button from "@/components/ui/buttonStyle";
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -42,7 +43,7 @@ export default function Login() {
             const { error } = await supabase.auth.signInWithOtp({
                 email: email,
                 options: {
-                    data: {display_name: name} ,
+                    data: { display_name: name },
                     emailRedirectTo: '/dashboard'
                 }
             });
@@ -70,12 +71,12 @@ export default function Login() {
     } else {
         return (
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen md:h-screen lg:py-0">
-                <div className="rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700">
+                <div className="rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-primary">
                     <div className="p-6 space-y-5 md:space-y-6 sm:p-8">
-                        <h1 className="flex justify-center text-4xl py-5 font-bold tracking-wide gradient-color">TO-DO | NOTES</h1>
+                        <h1 className="flex justify-center text-4xl py-5 font-bold tracking-wide">Notly</h1>
                         <div>
                             <h2 className="text-2xl font-semibold leading-tight tracking-tight md:text-2xl">Iniciar sesión</h2>
-                            <p className="text-gray-400">Introduce tu correo electrónico y te enviaremos un enlace mágico</p>
+                            <p className="text-white/60">Introduce tu correo electrónico y te enviaremos un enlace mágico</p>
                         </div>
                         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                             <input
@@ -85,22 +86,24 @@ export default function Login() {
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 disabled={isSubmitting}
-                                className="p-2 border-2 rounded-lg border-gray-500 pr-20 py-3 focus:border-blue-600 focus:border-2 focus:outline-hidden"
+                                className="p-2 rounded-lg border-1 border-border py-2 bg-primary focus:outline-2 focus:border-1 focus:border-[#797979] focus:outline-[#525252]"
                             />
                             <input
                                 type="email"
                                 name="email"
-                                placeholder="Correo electrónico"
+                                placeholder="Correo electrónico *"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
                                 disabled={isSubmitting}
-                                className="p-2 border-2 rounded-lg border-gray-500 pr-20 py-3 focus:border-blue-600 focus:border-2 focus:outline-hidden"
+                                className="p-2 rounded-lg border-1 border-border py-2 bg-primary focus:outline-2 focus:border-1 focus:border-[#797979] focus:outline-[#525252]"
+
                             />
-                            <button
+                            <Button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="bg-gradient-to-r from-blue-700 to-blue-600 cursor-pointer hover:bg-gradient-to-r hover:from-blue-800 hover:to-blue-600 py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                className="w-full flex justify-center items-center gap-2 mt-3"
+                                variant="white"
                             >
                                 {isSubmitting ? (
                                     <>
@@ -110,7 +113,7 @@ export default function Login() {
                                 ) : (
                                     'Iniciar sesión'
                                 )}
-                            </button>
+                            </Button>
                         </form>
                     </div>
                 </div>

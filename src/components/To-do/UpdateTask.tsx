@@ -29,7 +29,7 @@ interface EditForm {
     status: string;
     priority: string;
     date: string | null;
-    folderID: string;
+    folderID: number;
 }
 
 function UpdateTask(props: { idTask?: any, task?: any }) {
@@ -46,7 +46,7 @@ function UpdateTask(props: { idTask?: any, task?: any }) {
         status: '1',
         priority: '1',
         date: null,
-        folderID: ''
+        folderID: 0
     })
 
     interface FolderProps {
@@ -71,7 +71,7 @@ function UpdateTask(props: { idTask?: any, task?: any }) {
                     status: String(task.status ?? '1'),
                     priority: String(task.priority ?? '1'),
                     date: task.expirationDate ?? null,
-                    folderID: folderData ? String(folderData.folder_id) : ''
+                    folderID: folderData ? folderData.folder_id : 0
                 });
             }
         }
@@ -158,7 +158,7 @@ function UpdateTask(props: { idTask?: any, task?: any }) {
 
                     <select
                         value={update.folderID}
-                        onChange={(e) => setUpdate({ ...update, folderID: e.target.value })}
+                        onChange={(e) => setUpdate({ ...update, folderID: parseInt(e.target.value) })}
                         className="p-2 rounded-lg border-1 border-border py-2 bg-primary focus:outline-2 focus:border-1 focus:border-[#797979] focus:outline-[#525252]"
                     >
                         <option value="">Sin carpeta</option>

@@ -4,16 +4,15 @@ import TaskCard from './TaskCard'
 import { IconFilePlus, IconListCheck } from "@tabler/icons-react"
 import CreateTask from './CreateTask'
 import { Spinner } from '../ui/spinner'
-import FilterTask from './FilterTask'
 import Button from '../ui/buttonStyle'
 
 
-function TaskList({ done = false }) {
+function TaskList() {
   const { tasks, getTasks, loadinTask } = useTask()
 
   useEffect(() => {
-    getTasks(done)
-  }, [done])
+    getTasks()
+  })
 
   interface taskProps {
     name: string,

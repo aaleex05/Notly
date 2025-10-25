@@ -33,7 +33,7 @@ export function FoldersList() {
     }
 
     return (
-        <div className="flex gap-5 mt-5 ml-4">
+        <div className="flex flex-wrap gap-5 mt-5 ml-4">
             {folders.map((folder: FolderProps) => (
                 <FolderCard key={folder.id} folder={folder} />
             ))}

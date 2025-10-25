@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog"
 import TaskForm from "./TaskForm"
 import { ReactNode, useState } from "react"
+import { ListChecks } from "lucide-react"
 
 
 function CreateTask({children}: {children: ReactNode}) {
@@ -23,10 +24,10 @@ function CreateTask({children}: {children: ReactNode}) {
             </DialogTrigger>
             <DialogContent className="dark">
                 <DialogHeader>
-                    <DialogTitle>Crear Tarea</DialogTitle>
-                    <DialogDescription>
-                        Rellena el formulario para crear una nueva tarea.
-                    </DialogDescription>
+                    <DialogTitle className="text-4xl flex gap-3 items-center">
+                        <span className="bg-primary border p-2 rounded-lg"><ListChecks size={30} /></span>
+                        Crear tarea
+                    </DialogTitle>
                 </DialogHeader>
                 <TaskForm setOpenForm={setOpenForm} />
             </DialogContent>

@@ -140,9 +140,9 @@ export default function NoteForm() {
         return (
             <div className="flex flex-col items-center gap-3 justify-center h-full text-white/80">
                 <div className="bg-primary border p-6 rounded-full">
-                    <NotebookPenIcon size={60} />
+                    <NotebookPenIcon size={60}/>
                 </div>
-                <h1 className="text-2xl mb-2 font-semibold">Crea una nota para comenzar a editarla</h1>
+                <h1 className="lg:text-2xl text-xl text-center mb-2 font-semibold">Crea una nota para comenzar a editarla</h1>
                 <Button onClick={createNote} variant={"white"}>Nueva nota</Button>
             </div>
         )
@@ -150,7 +150,7 @@ export default function NoteForm() {
 
         return (
             <div className="flex flex-col gap-4 h-full">
-                <div className="flex items-center justify-between">
+                <div className="lg:flex items-center">
                     <input
                         type="text"
                         placeholder="Título de la nota..."
@@ -159,8 +159,9 @@ export default function NoteForm() {
                         maxLength={50}
                         className="text-2xl border-none w-full outline-none font-bold focus:ring-0 p-2"
                     />
-                    <div className="ml-auto flex items-center gap-2 ">
-                        <Button
+                    <div className="ml-auto flex items-center justify-between">
+                        <div className="flex gap-2">
+                            <Button
                             onClick={() => setMostrarNota(!mostrarNota)}
                             className="text-sm w-fit p-2 rounded-lg transition-colors duration-300"
                             title="Cerrar nota"
@@ -187,6 +188,20 @@ export default function NoteForm() {
                                 <Trash2 />
                             </Button>
                         )}
+                        </div>
+                        <div className="ml-10">
+                            {(currentNoteId || currentTitle || currentContent) && (
+                            <div
+                                className={`text-sm w-fit flex items-center p-2 rounded-lg transition-colors duration-300 
+                            ${isSaving
+                                        ? 'text-white/60 bg-[#111111] border'
+                                        : 'text-white/40 bg-[#12212] border'
+                                    }`}
+                            >
+                                <CloudCheck />
+                            </div>
+                        )}
+                        </div>
                     </div>
                 </div>
 
@@ -301,17 +316,6 @@ export default function NoteForm() {
 
 
                     </div>
-                    {(currentNoteId || currentTitle || currentContent) && (
-                        <div
-                            className={`text-sm w-fit h-full flex items-center p-1.5 rounded-lg transition-colors duration-300 
-                            ${isSaving
-                                    ? 'text-white/60 bg-[#111111] border'
-                                    : 'text-white/40 bg-[#12212] border'
-                                }`}
-                        >
-                            <CloudCheck />
-                        </div>
-                    )}
                 </div>
 
                 <div className="border rounded-lg h-full scroll-smooth p-0 no-scrollbar overflow-y-auto">

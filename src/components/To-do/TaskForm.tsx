@@ -60,7 +60,7 @@ function TaskForm({ setOpenForm }: { setOpenForm: (open: boolean) => void }) {
                 type="text"
                 required
                 name="taskName"
-                placeholder="Escribe el nombre"
+                placeholder="Escribe el nombre *"
                 onChange={(e) => setTaskData({ ...taskData, name: e.target.value })}
                 value={taskData.name}
                 maxLength={25}

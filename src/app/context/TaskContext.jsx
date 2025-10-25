@@ -15,7 +15,6 @@ export const TaskContextProvider = ({ children }) => {
 
     const [tasks, setTasks] = useState([])
     const [addingTask, setAddingTask] = useState(false)
-    const [showTaskDone, setShowTaskDone] = useState(false)
     const [expanded, setExpanded] = useState(true);
     const [open, setOpen] = useState(false)
     const [date, setDate] = useState(null)
@@ -99,7 +98,11 @@ export const TaskContextProvider = ({ children }) => {
 
         if (error) toast.error("Error al actualizar la tarea")
 
-        setTasks(tasks.filter((task) => task.id != idTask))
+        setTasks(prevTasks =>
+        prevTasks.map((task) =>
+            task.id === idTask ? { ...task, ...data[0] } : task
+        )
+    )
     }
 
     const updateTask = async (idTask, updateTask) => {
@@ -161,7 +164,7 @@ export const TaskContextProvider = ({ children }) => {
             const { data, error } = await supabase.from("tasks")
                 .select()
                 .eq("userID", user.id) // Para que solo salga la tarea del usuario actual
-                .eq("done", done)
+                .order('id', { ascending: true })
 
             setTasks(data)
         } catch (error) {
@@ -185,7 +188,6 @@ export const TaskContextProvider = ({ children }) => {
             deleteTask,
             updateDone,
             updateTask,
-            showTaskDone,
             expanded,
             setExpanded,
             open,

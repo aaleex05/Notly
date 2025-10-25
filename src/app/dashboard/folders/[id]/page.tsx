@@ -39,15 +39,6 @@ function FolderPageContentClient({ id }: { id: number }) {
         )
     }
 
-    if (folderContent.length === 0) {
-        return (
-            <div>
-                <h1 className="text-3xl font-bold mb-5">La carpeta está vacía.</h1>
-            </div>
-        )
-    }
-
-
     const tasksToShow = folderContent[0]?.folder_tasks?.map(
         (relation: any) => relation.tasks
     ) || []
@@ -70,7 +61,7 @@ function FolderPageContentClient({ id }: { id: number }) {
 
     return (
         <div>
-            <h1 className="text-3xl font-bold mb-5">Carpeta: {folderContent[0].name}</h1>
+            <h1 className="text-3xl p-5 font-bold">Carpeta: {folderContent[0].name}</h1>
 
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-4 p-2.5 sm:p-5 auto-rows-fr'>
                 {tasksToShow.map((task: taskProps) => (

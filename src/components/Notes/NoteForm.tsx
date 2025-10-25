@@ -20,12 +20,14 @@ import {
     Trash2,
     Underline,
     Heading3,
-    NotebookPenIcon
+    NotebookPenIcon,
+    Folder,
+    Plus
 } from "lucide-react";
 import Button from "../ui/buttonStyle";
 import { toast } from "sonner";
 import { IconBlockquote } from "@tabler/icons-react";
-
+import { useFolder } from "@/app/context/FolderContext";
 
 export default function NoteForm() {
     const {
@@ -34,6 +36,7 @@ export default function NoteForm() {
         currentContent,
         setCurrentTitle,
         setCurrentContent,
+        setCurrentFolder,
         createNote,
         updateNote,
         newNote,
@@ -41,6 +44,13 @@ export default function NoteForm() {
         deleteNote,
         notes,
     } = useNote();
+
+    const { folders } = useFolder();
+
+    interface FolderProps {
+        id: number;
+        name: string;
+    }
 
     const [isSaving, setIsSaving] = useState(false);
     const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -91,6 +101,7 @@ export default function NoteForm() {
                 const noteData = {
                     title: currentTitle || "Sin título",
                     content: currentContent,
+                    
                 };
 
                 if (currentNoteId) {
@@ -136,10 +147,10 @@ export default function NoteForm() {
         return (
             <div className="flex flex-col items-center gap-3 justify-center h-full text-white/80">
                 <div className="bg-primary border p-6 rounded-full">
-                    <NotebookPenIcon size={60}/>
+                    <NotebookPenIcon size={60} />
                 </div>
                 <h1 className="text-2xl mb-2 font-semibold">Crea una nota para comenzar a editarla</h1>
-                <Button onClick={createNote} variant={"white"}>Nueva Nota</Button>
+                <Button onClick={createNote} variant={"white"}>Nueva nota</Button>
             </div>
         )
     } else {
@@ -276,7 +287,21 @@ export default function NoteForm() {
                     </button>
 
                     <div className="ml-auto flex items-center gap-2">
-                        <Button onClick={newNote}>Nueva nota</Button>
+                        <Button title="Nueva nota" onClick={newNote}><Plus size={18} /></Button>
+                        <select
+                            name="folders"
+                            defaultValue="default"
+                            onChange={(e) => setCurrentFolder(e.target.value)}
+                            className="p-2 rounded-lg border-1 border-border py-2 bg-primary focus:outline-2 focus:border-1 focus:border-[#797979] focus:outline-[#525252]"
+                        >
+                            <option value="default" disabled className="placeholder:text-amber-300">Selecionar carpeta</option>
+                            {
+                                folders.map((folder: FolderProps) => (
+                                    <option key={folder.id} value={folder.id}>{folder.name}</option>
+                                ))
+                            }
+
+                        </select>
                         {currentNoteId && (
                             <Button title="Eliminar nota" onClick={handleDeleteNote}>
                                 <Trash2 size={22} />

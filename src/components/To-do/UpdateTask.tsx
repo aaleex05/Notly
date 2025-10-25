@@ -19,6 +19,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import { format } from "date-fns"
+import { useFolder } from "@/app/context/FolderContext"
 
 interface EditForm {
     name: string;
@@ -26,6 +27,7 @@ interface EditForm {
     status: string;
     priority: string;
     date: string | null;
+    folderID: string;
 }
 
 
@@ -33,6 +35,7 @@ function UpdateTask(props: { idTask?: any, task?: any }) {
 
     const { updateTask, date } = useTask()
     const { idTask, task } = props
+    const { setTaskData, folders } = useFolder()
 
     const [loading, setLoading] = useState(false)
     const [update, setUpdate] = useState<EditForm>({
@@ -40,8 +43,14 @@ function UpdateTask(props: { idTask?: any, task?: any }) {
         description: '',
         status: '1',
         priority: '1',
-        date: null
+        date: null,
+        folderID: ''
     })
+
+    interface FolderProps {
+        id: number;
+        name: string;
+    }
 
     useEffect(() => {
         if (task) {
@@ -50,7 +59,8 @@ function UpdateTask(props: { idTask?: any, task?: any }) {
                 description: task.description ?? '',
                 status: String(task.status ?? '1'),
                 priority: String(task.priority ?? '1'),
-                date: task.date ?? null
+                date: task.date ?? null,
+                folderID: task.folderID ?? '',
             })
         }
     }, [task])
@@ -64,7 +74,8 @@ function UpdateTask(props: { idTask?: any, task?: any }) {
                 description: update.description,
                 status: update.status,
                 priority: update.priority,
-                expirationDate: update.date
+                expirationDate: update.date,
+                folderID: update.folderID,
             }
             await updateTask(idTask, valuesUpdate)
             toast.success('Tarea actualizada')
@@ -130,14 +141,20 @@ function UpdateTask(props: { idTask?: any, task?: any }) {
                         <option value="3">Alta</option>
                     </select>
 
-
-                    {/* <input
-                        type="date"
-                        id="inputDate"
-                        placeholder="Selecciona una fecha"
-                        onChange={(date) => setUpdate({ ...update, date: date.target.value })}
+                    <select
+                        name="folders"
+                        defaultValue="default"
+                        onChange={(e) => setUpdate({ ...update, folderID: e.target.value })}
                         className="p-2 rounded-lg border-1 border-border py-2 bg-primary focus:outline-2 focus:border-1 focus:border-[#797979] focus:outline-[#525252]"
-                    /> */}
+                    >
+                        <option value="default" disabled className="placeholder:text-amber-300">Seleccionar carpeta (opcional)</option>
+                        {
+                            folders.map((folder: FolderProps) => (
+                                <option key={folder.id} value={folder.id}>{folder.name}</option>
+                            ))
+                        }
+
+                    </select>
 
                     <Popover>
                         <PopoverTrigger asChild>

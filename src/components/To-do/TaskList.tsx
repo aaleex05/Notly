@@ -5,6 +5,7 @@ import { IconFilePlus, IconListCheck } from "@tabler/icons-react"
 import CreateTask from './CreateTask'
 import { Spinner } from '../ui/spinner'
 import FilterTask from './FilterTask'
+import Button from '../ui/buttonStyle'
 
 
 function TaskList({ done = false }) {
@@ -31,7 +32,11 @@ function TaskList({ done = false }) {
           <IconListCheck size={60} />
         </div>
         <h1 className="text-2xl mb-2 font-semibold">Empieza creando tu primera tarea.</h1>
-        <CreateTask variante="white" text='Crear Tarea' size='default' className=''/>
+        <CreateTask>
+          <Button variant="white" size='default' className='flex gap-3 items-center text-md'>
+            Crear tarea
+          </Button>
+        </CreateTask>
       </div>
     )
   }

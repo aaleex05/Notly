@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react"
+import React, { createContext, useContext, useEffect, useState, useCallback, use } from "react"
 import { supabase } from "../backend/client"
 import { toast } from "sonner"
 
@@ -11,13 +11,17 @@ export const useFolder = () => {
 }
 
 export const FolderContextProvider = ({ children }) => {
-
     const [folders, setFolders] = useState([])
+    const [loading, setLoading] = useState(false)
+    const [folderContent, setFolderContent] = useState([])
+    const [foldersLoaded, setFoldersLoaded] = useState(false)
+
     useEffect(() => {
         getFolders();
     }, []);
 
     const createFolder = async (folderData) => {
+        setLoading(true);
         const { data: { user } } = await supabase.auth.getUser()
         if (!user) {
             console.log("No se pudo obtener el usuario autenticado");
@@ -32,14 +36,17 @@ export const FolderContextProvider = ({ children }) => {
             })
                 .select();
 
-            setFolders([...notes, ...data])
+            if (error) throw error;
+
+            setFolders([...folders, ...data])
             console.log(data)
-            return data; // Retornar los datos para obtener el ID
 
         } catch (error) {
             console.log(error)
             toast.error("Error al crear la carpeta")
             return;
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -75,6 +82,37 @@ export const FolderContextProvider = ({ children }) => {
         }
     }
 
+    
+
+    const FolderContent = useCallback(async (idPage) => {
+        setLoading(true);
+        try {
+            const { data: { user } } = await supabase.auth.getUser()
+            if (!user) {
+                console.log("No se pudo obtener el usuario autenticado");
+                return;
+            }
+            const { data, error } = await supabase
+                .from("folders")
+                .select("*")
+                .eq("userID", user.id)
+                .eq("id", idPage)
+                .single();
+
+            if (error) {
+                console.log(error);
+                return;
+            }
+
+            setFolderContent(data ? [data] : []);
+        } catch (error) {
+            console.error(error);
+            toast.error("Error al cargar el contenido");
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
     const deleteFolder = async (idFolder) => {
         try {
             const { data: { user } } = await supabase.auth.getUser()
@@ -89,6 +127,8 @@ export const FolderContextProvider = ({ children }) => {
                 .eq("userID", user.id)
                 .select();
 
+            if (error) throw error;
+
             console.log(data)
             setFolders(folders.filter((folder) => folder.id != idFolder))
 
@@ -97,29 +137,33 @@ export const FolderContextProvider = ({ children }) => {
             toast.error("Error al eliminar la carpeta")
             return;
         }
-
     }
 
     const getFolders = async () => {
+        setLoading(true);
         const { data: { user } } = await supabase.auth.getUser()
-        if (!user) {
-            console.log("No se pudo obtener el usuario autenticado");
-            return;
+        try {
+            if (!user) {
+                console.log("No se pudo obtener el usuario autenticado");
+                return;
+            }
+
+            const { data, error } = await supabase
+                .from("folders")
+                .select("*")
+                .eq("userID", user.id)
+                .order("created_at", { ascending: false });
+
+            if (error) {
+                console.log(error)
+                return;
+            }
+
+            setFolders(data || []);
+            setFoldersLoaded(true);
+        } finally {
+            setLoading(false);
         }
-
-        const { data, error } = await supabase
-            .from("folders")
-            .select("*")
-            .eq("userID", user.id)
-            .order("created_at", { ascending: false });
-
-        if (error) {
-            console.log(error)
-            return;
-        }
-
-        setFolders(data || []);
-
     }
 
     return (
@@ -130,8 +174,11 @@ export const FolderContextProvider = ({ children }) => {
                 createFolder,
                 updateFolder,
                 deleteFolder,
-                getFolders
-                }}>
+                getFolders,
+                FolderContent,
+                folderContent,
+                loading
+            }}>
             {children}
         </FolderContext.Provider>
     )

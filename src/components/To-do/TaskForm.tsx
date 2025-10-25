@@ -3,13 +3,14 @@ import { useTask } from "../../app/context/TaskContext";
 import { toast } from "sonner";
 import { Spinner } from "../ui/spinner";
 import Button from "../ui/buttonStyle";
-import { CalendarComponent, formatDateString } from "../CalendarComp";
+import { formatDateString } from "../CalendarComp";
 import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
-import { format } from "date-fns"
+import { format, set } from "date-fns"
+import { useFolder } from "@/app/context/FolderContext";
 
-function TaskForm() {
+function TaskForm({ setOpenForm }: { setOpenForm: (open: boolean) => void }) {
 
     type TaskFormData = {
         name: string;
@@ -17,16 +18,23 @@ function TaskForm() {
         status: string;
         priority: string;
         date: string | null;
+        folderID: string
+    }
+
+    interface FolderProps {
+        id: number;
+        name: string;
     }
 
     const { createTask, addingTask, setDate } = useTask()
+    const { folders } = useFolder()
     const [taskData, setTaskData] = useState<TaskFormData>({
         name: "",
         description: "",
         status: "1",
         priority: "1",
-        date: null
-
+        date: null,
+        folderID: ""
     })
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -39,8 +47,10 @@ function TaskForm() {
             description: "",
             status: "1",
             priority: "1",
-            date: null
+            date: null,
+            folderID: ""
         })
+        setOpenForm(false)
     }
 
     return (
@@ -85,6 +95,20 @@ function TaskForm() {
                 <option value="2">Media</option>
                 <option value="3">Alta</option>
             </select>
+            <select
+                name="folders"
+                defaultValue="default"
+                onChange={(e) => setTaskData({ ...taskData, folderID: e.target.value })}
+                className="p-2 rounded-lg border-1 border-border py-2 bg-primary focus:outline-2 focus:border-1 focus:border-[#797979] focus:outline-[#525252]"
+            >
+                <option value="default" disabled className="placeholder:text-amber-300">Seleccionar carpeta (opcional)</option>
+                {
+                    folders.map((folder: FolderProps) => (
+                        <option key={folder.id} value={folder.id}>{folder.name}</option>
+                    ))
+                }
+
+            </select>
 
             <Popover>
                 <PopoverTrigger asChild>
@@ -101,7 +125,7 @@ function TaskForm() {
                         fixedWeeks
                         mode="single"
                         selected={taskData.date ? new Date(taskData.date) : undefined}
-                        onSelect={(date) => setTaskData({ ...taskData, date: date ? date.toISOString() : null})}
+                        onSelect={(date) => setTaskData({ ...taskData, date: date ? date.toISOString() : null })}
                         className="bg-primary border-1 border-border rounded-lg"
                     />
                 </PopoverContent>

@@ -2,12 +2,14 @@ import React from 'react'
 import { toast } from 'sonner';
 import Link from "next/link";
 import { supabase } from '@/app/backend/client';
+import { redirect } from 'next/navigation';
 
 function NavBar() {
 
     const handleLogout = async () => {
         try {
             await supabase.auth.signOut();
+            redirect("/login");
         } catch (error) {
             console.error("Error logging out:", error);
             toast.error("Error al cerrar sesión");

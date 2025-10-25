@@ -8,23 +8,18 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import Button, { buttonVariants } from "../ui/buttonStyle"
 import TaskForm from "./TaskForm"
-import { ReactNode } from "react"
-
-interface CreateTaskProps {
-    variante: "default" | "white" | "outline" | "secondary" | "ghost" | "link"
-    text: string | ReactNode
-    size: "default" | "sm" | "lg" | "icon"
-    className: string
-}
+import { ReactNode, useState } from "react"
 
 
-function CreateTask({variante, text, size, className}: CreateTaskProps) {
+function CreateTask({children}: {children: ReactNode}) {
+
+    const [openForm, setOpenForm] = useState(false)
+
     return (
-        <Dialog>
+        <Dialog open={openForm} onOpenChange={setOpenForm}>
             <DialogTrigger asChild>
-                <Button className={className} variant={variante} size={size}>{text}</Button>
+                {children}
             </DialogTrigger>
             <DialogContent className="dark">
                 <DialogHeader>
@@ -33,7 +28,7 @@ function CreateTask({variante, text, size, className}: CreateTaskProps) {
                         Rellena el formulario para crear una nueva tarea.
                     </DialogDescription>
                 </DialogHeader>
-                <TaskForm/>
+                <TaskForm setOpenForm={setOpenForm} />
             </DialogContent>
         </Dialog>
     )

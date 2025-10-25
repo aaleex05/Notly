@@ -3,7 +3,6 @@
 import { useNote } from "@/app/context/NoteContext";
 import { TextInitial } from "lucide-react";
 import Button from "../ui/buttonStyle";
-import { useState } from "react";
 
 type Note = {
     id: number;

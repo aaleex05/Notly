@@ -16,6 +16,7 @@ export const NoteContextProvider = ({ children }) => {
     const [currentNoteId, setCurrentNoteId] = useState(null)
     const [currentTitle, setCurrentTitle] = useState("")
     const [currentContent, setCurrentContent] = useState("")
+    const [currenFolder, setCurrentFolder] = useState("")
     useEffect(() => {
         getNotes();
     }, []);
@@ -135,6 +136,7 @@ export const NoteContextProvider = ({ children }) => {
         setCurrentNoteId(note.id)
         setCurrentTitle(note.title)
         setCurrentContent(note.content)
+        setCurrentFolder(note.folderID)
     }
 
     const newNote = () => {

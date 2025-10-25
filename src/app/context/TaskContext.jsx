@@ -41,8 +41,20 @@ export const TaskContextProvider = ({ children }) => {
                 userID: user.id,
                 done: false,
                 expirationDate: taskData.date
+
             })
                 .select();
+            if (taskData.folderID && taskData.folderID !== 0 && data && data[0]) {
+                const { error: folderError } = await supabase
+                    .from("folders")
+                    .update({ idTasks: data[0].id })
+                    .eq("id", taskData.folderID)
+                    .eq("userID", user.id);
+
+                if (folderError) {
+                    console.error("Error al relacionar con carpeta:", folderError);
+                }
+            }
 
             setTasks([...tasks, ...data])
             console.log(data)
@@ -124,7 +136,26 @@ export const TaskContextProvider = ({ children }) => {
 
 
     return <TaskContext.Provider
-        value={{ tasks, getTasks, createTask, addingTask, setValueNull, valueNull, deleteTask, updateDone, updateTask, showTaskDone, expanded, setExpanded, open, setOpen, date, setDate, month, setMonth }}>
+        value={{
+            tasks,
+            getTasks,
+            createTask,
+            addingTask,
+            setValueNull,
+            valueNull,
+            deleteTask,
+            updateDone,
+            updateTask,
+            showTaskDone,
+            expanded,
+            setExpanded,
+            open,
+            setOpen,
+            date,
+            setDate,
+            month,
+            setMonth,
+        }}>
         {children}
     </TaskContext.Provider>
 }

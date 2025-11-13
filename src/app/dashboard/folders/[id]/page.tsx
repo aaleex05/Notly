@@ -30,7 +30,7 @@ function FolderPageContentClient({ id }: { id: number }) {
 
     useEffect(() => {
         FolderContent(id)
-    }, [id])
+    }, [FolderContent, id])
 
     if (loading) {
         return (

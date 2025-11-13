@@ -163,7 +163,7 @@ export const TaskContextProvider = ({ children }) => {
 
             const { data, error } = await supabase.from("tasks")
                 .select()
-                .eq("userID", user.id) // Para que solo salga la tarea del usuario actual
+                .eq("userID", user.id) // Para que solo salga la tarea del usuario actua
                 .order('id', { ascending: true })
 
             setTasks(data)

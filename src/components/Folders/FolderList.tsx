@@ -1,14 +1,12 @@
 import { useFolder } from "@/app/context/FolderContext";
 import FolderCard from "./FolderCard";
 import { Folder } from "lucide-react";
-import CreateTask from "../To-do/CreateTask";
 import FolderForm from "./FolderForm";
 import Button from "../ui/buttonStyle";
-import { useEffect } from "react";
 import { Spinner } from "../ui/spinner";
 
 export function FoldersList() {
-    const { folders, loading, getFolders } = useFolder();
+    const { folders, loading } = useFolder();
     if (loading) return <div className="flex items-center h-full justify-center"><Spinner/></div>;
 
     interface FolderProps {

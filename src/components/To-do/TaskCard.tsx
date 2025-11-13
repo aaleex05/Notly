@@ -1,6 +1,6 @@
 import { useTask } from '@/app/context/TaskContext'
-import React, { useState } from 'react'
-import { Trash2, CheckCheck, X, SquarePen } from 'lucide-react'
+import React from 'react'
+import { Trash2, CheckCheck, X } from 'lucide-react'
 import { formatDateString } from '../CalendarComp'
 import UpdateTask from './UpdateTask'
 import {
@@ -8,7 +8,6 @@ import {
     DialogClose,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,

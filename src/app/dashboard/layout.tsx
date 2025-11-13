@@ -1,7 +1,7 @@
 "use client"
 
 import SideBar, { SideBarCreateItem, SideBarItem } from "@/components/SideBar";
-import { ListChecks, HomeIcon, NotepadText, ListPlus, Folder } from "lucide-react";
+import { ListChecks, HomeIcon, NotepadText, Folder } from "lucide-react";
 import { TaskContextProvider, useTask } from "../context/TaskContext";
 import { FolderContextProvider } from "../context/FolderContext";
 import { NoteContextProvider } from "../context/NoteContext";

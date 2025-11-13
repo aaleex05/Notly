@@ -7,7 +7,7 @@ import { formatDateString } from "../CalendarComp";
 import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "../ui/calendar";
-import { format, set } from "date-fns"
+import { format } from "date-fns"
 import { useFolder } from "@/app/context/FolderContext";
 
 function TaskForm({ setOpenForm }: { setOpenForm: (open: boolean) => void }) {

@@ -1,6 +1,6 @@
 "use client"
 
-import { LogOut, ChevronLast, ChevronFirst, FilePlus, User, FolderPlus, NotebookPen, ListPlus } from "lucide-react"
+import { LogOut, ChevronLast, ChevronFirst, User, FolderPlus, NotebookPen, ListPlus } from "lucide-react"
 import { useState } from "react"
 import CreateTask from "./To-do/CreateTask"
 import Link from "next/link"

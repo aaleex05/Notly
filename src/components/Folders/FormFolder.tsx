@@ -1,6 +1,5 @@
 import Button from "../ui/buttonStyle"
-import { FolderContextProvider, useFolder } from "@/app/context/FolderContext"
-import { Folder } from "lucide-react"
+import { useFolder } from "@/app/context/FolderContext"
 import { useState } from "react"
 import { toast } from "sonner"
 

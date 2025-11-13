@@ -1,9 +1,8 @@
 import { useTask } from '@/app/context/TaskContext'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import TaskCard from './TaskCard'
-import { IconFilePlus, IconListCheck } from "@tabler/icons-react"
+import { IconListCheck } from "@tabler/icons-react"
 import CreateTask from './CreateTask'
-import { Spinner } from '../ui/spinner'
 import Button from '../ui/buttonStyle'
 
 

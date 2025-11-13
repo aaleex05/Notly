@@ -7,7 +7,7 @@ import Button from '../ui/buttonStyle'
 
 
 function TaskList() {
-  const { tasks, getTasks, loadinTask } = useTask()
+  const { tasks, getTasks } = useTask()
 
   useEffect(() => {
     getTasks()

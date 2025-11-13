@@ -26,7 +26,7 @@ function TaskForm({ setOpenForm }: { setOpenForm: (open: boolean) => void }) {
         name: string;
     }
 
-    const { createTask, addingTask, setDate } = useTask()
+    const { createTask, addingTask } = useTask()
     const { folders } = useFolder()
     const [taskData, setTaskData] = useState<TaskFormData>({
         name: "",

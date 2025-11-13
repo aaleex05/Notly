@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react'
 import { Spinner } from '@/components/ui/spinner'
 import { supabase } from '../backend/client'
 import { useRouter } from 'next/navigation'
+import { User } from '@supabase/supabase-js'
 
 export function DashboardContent() {
 
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
   useEffect(() => {

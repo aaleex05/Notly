@@ -32,7 +32,18 @@ interface EditForm {
     folderID: number;
 }
 
-function UpdateTask(props: { idTask?: any, task?: any }) {
+interface taskProps {
+    name: string,
+    description: string,
+    status: string,
+    priority: string,
+    done: boolean,
+    id: number,
+    expirationDate: null
+    foldereID?: number
+}
+
+function UpdateTask(props: { idTask?: number, task?: taskProps }) {
 
     const { updateTask } = useTask()
     const { idTask, task } = props
@@ -118,7 +129,7 @@ function UpdateTask(props: { idTask?: any, task?: any }) {
                 <DialogHeader>
                     <DialogTitle>Editar tarea</DialogTitle>
                     <DialogDescription>
-                        Modifica los campos y pulsa "Actualizar".
+                        Modifica los campos y pulsa 'Actualizar'.
                     </DialogDescription>
                 </DialogHeader>
 

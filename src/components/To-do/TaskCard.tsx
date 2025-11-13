@@ -21,7 +21,7 @@ interface taskProps {
     status: string,
     priority: string,
     done: boolean,
-    id: any,
+    id: number,
     expirationDate: null
     foldereID?: number
 }

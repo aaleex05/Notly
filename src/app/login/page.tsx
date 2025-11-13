@@ -6,13 +6,14 @@ import { supabase } from "../backend/client";
 import { toast } from "sonner";
 import { Spinner } from "@/components/ui/spinner";
 import Button from "@/components/ui/buttonStyle";
+import { User } from "@supabase/supabase-js";
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [loading, setLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<User | null>(null);
     const router = useRouter();
 
 

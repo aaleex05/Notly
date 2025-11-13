@@ -129,7 +129,7 @@ function UpdateTask(props: { idTask?: number, task?: taskProps }) {
                 <DialogHeader>
                     <DialogTitle>Editar tarea</DialogTitle>
                     <DialogDescription>
-                        Modifica los campos y pulsa 'Actualizar'.
+                        Modifica los campos y pulsa &apos;Actualizar&apos;.
                     </DialogDescription>
                 </DialogHeader>
 

@@ -7,4 +7,7 @@ if (typeof window !== 'undefined' && (!supabaseUrl || !supabaseKey)) {
     console.error('Faltan las variables de entorno de Supabase');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+export const supabase = createClient(
+    supabaseUrl || 'https://placeholder.supabase.co',
+    supabaseKey || 'placeholder-key'
+);

@@ -22,7 +22,7 @@ function truncateWords(text: string, limite: number): string {
 }
 
 export default function NoteCard({ note }: NoteCardProps) {
-    const { selectNote, notes, updateNote, currentNoteId, setMostrarNota } = useNote();
+    const { selectNote, currentNoteId, setMostrarNota } = useNote();
     
     const handleShowNote = () => {
         selectNote(note);

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useCallback, use } from "react"
+import React, { createContext, useContext, useEffect, useState, useCallback } from "react"
 import { supabase } from "../backend/client"
 import { toast } from "sonner"
 
@@ -14,7 +14,7 @@ export const FolderContextProvider = ({ children }) => {
     const [folders, setFolders] = useState([])
     const [loading, setLoading] = useState(false)
     const [folderContent, setFolderContent] = useState([])
-    const [setFoldersLoaded] = useState(false)
+    const [foldersLoaded ,setFoldersLoaded] = useState(false)
 
     useEffect(() => {
         getFolders();

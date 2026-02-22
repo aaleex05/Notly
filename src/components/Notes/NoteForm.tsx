@@ -163,26 +163,12 @@ export default function NoteForm() {
                         <div className="flex gap-2">
                             <Button
                             onClick={() => setMostrarNota(!mostrarNota)}
-                            className="text-sm w-fit p-2 rounded-lg transition-colors duration-300"
+                            className="text-sm w-fit p-2 block xl:hidden rounded-lg transition-colors duration-300"
                             title="Cerrar nota"
                         >
                             <X />
                         </Button>
                         <Button title="Nueva nota" className="text-sm w-fit p-2 rounded-lg transition-colors duration-300" onClick={newNote}><NotebookPenIcon /></Button>
-                        {/* <select
-                            name="folders"
-                            defaultValue="default"
-                            onChange={(e) => setCurrentFolder(e.target.value)}
-                            className="p-2 rounded-lg border-1 border-border py-2 bg-primary focus:outline-2 focus:border-1 focus:border-[#797979] focus:outline-[#525252]"
-                        >
-                            <option value="default" disabled className="placeholder:text-amber-300">Selecionar carpeta</option>
-                            {
-                                folders.map((folder: FolderProps) => (
-                                    <option key={folder.id} value={folder.id}>{folder.name}</option>
-                                ))
-                            }
-
-                        </select> */}
                         {currentNoteId && (
                             <Button title="Eliminar nota" className="text-sm w-fit p-2 rounded-lg transition-colors duration-300" onClick={handleDeleteNote}>
                                 <Trash2 />

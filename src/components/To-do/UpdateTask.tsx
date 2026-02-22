@@ -51,6 +51,7 @@ function UpdateTask(props: { idTask?: number, task?: taskProps }) {
     const params = useParams() 
 
     const [loading, setLoading] = useState(false)
+    const [open, setOpen] = useState(false)
     const [update, setUpdate] = useState<EditForm>({
         name: '',
         description: '',
@@ -65,30 +66,29 @@ function UpdateTask(props: { idTask?: number, task?: taskProps }) {
         name: string;
     }
 
-    useEffect(() => {
-        const loadTaskData = async () => {
-            if (task && idTask) {
-                // Obtener carpeta asociada
-                const { data: folderData } = await supabase
-                    .from("folder_tasks")
-                    .select("folder_id")
-                    .eq("task_id", idTask)
-                    .maybeSingle();
+    const loadTaskData = async () => {
+        if (task && idTask) {
+            // Obtener carpeta asociada
+            const { data: folderData } = await supabase
+                .from("folder_tasks")
+                .select("folder_id")
+                .eq("task_id", idTask)
+                .maybeSingle();
 
-                // Establecer todo el estado
-                setUpdate({
-                    name: task.name ?? '',
-                    description: task.description ?? '',
-                    status: String(task.status ?? '1'),
-                    priority: String(task.priority ?? '1'),
-                    date: task.expirationDate ?? null,
-                    folderID: folderData ? folderData.folder_id : 0
-                });
-            }
+            // Establecer todo el estado
+            setUpdate({
+                name: task.name ?? '',
+                description: task.description ?? '',
+                status: String(task.status ?? '1'),
+                priority: String(task.priority ?? '1'),
+                date: task.expirationDate ?? null,
+                folderID: folderData ? folderData.folder_id : 0
+            });
         }
-
+    }
+    useEffect(() => {
         loadTaskData();
-    }, [task, idTask])
+    }, [])
 
     const handleUpdate = async () => {
         setLoading(true)
@@ -103,6 +103,7 @@ function UpdateTask(props: { idTask?: number, task?: taskProps }) {
             }
             
             await updateTask(idTask, valuesUpdate)
+            setOpen(false)
             
             // Recargar el contenido de la carpeta si esta en una página de carpeta
             if (params?.id) {
@@ -118,7 +119,12 @@ function UpdateTask(props: { idTask?: number, task?: taskProps }) {
     }
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={(isOpen) => {
+            setOpen(isOpen);
+            if (isOpen) {
+                loadTaskData();
+            }
+        }}>
             <DialogTrigger asChild>
                 <button
                     className="cursor-pointer hover:text-white transition-colors">

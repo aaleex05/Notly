@@ -6,6 +6,7 @@ import TaskCard from "@/components/To-do/TaskCard"
 import CreateTask from "@/components/To-do/CreateTask"
 import { Folder } from "lucide-react"
 import Button from "@/components/ui/buttonStyle"
+import { useTask } from "@/app/context/TaskContext"
 
 export default function FolderPage({ params }: { params: Promise<{ id: number }> }) {
     const { id } = use(params)
@@ -14,7 +15,6 @@ export default function FolderPage({ params }: { params: Promise<{ id: number }>
 
 function FolderPageContentClient({ id }: { id: number }) {
 
-    // Tipo de cada tarea
     interface taskProps {
         name: string
         description: string
@@ -30,18 +30,13 @@ function FolderPageContentClient({ id }: { id: number }) {
     }
 
     const { FolderContent, folderContent, loading } = useFolder()
+    const { tasks } = useTask()
 
     useEffect(() => {
         FolderContent(id)
-    }, [FolderContent, id])
+    }, [id, tasks])
 
-    if (loading) {
-        return (
-            <div className="flex items-center h-full justify-center">
-                <Spinner />
-            </div>
-        )
-    }
+
 
     const tasksToShow: taskProps[] = (folderContent[0]?.folder_tasks?.map(
         (relation: FolderTaskRelation) => relation.tasks

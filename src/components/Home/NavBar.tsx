@@ -47,7 +47,16 @@ export function NavBar() {
                 Dashboard
               </Link>
             )
-          ) : null}
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link
+                href="/login"
+                className="bg-primary text-primary-foreground hover:bg-primary/70 h-9 px-4 py-2 rounded-xl text-sm font-medium transition-all border border-border"
+              >
+                Comenzar ahora
+              </Link>
+            </div>
+          )}
         </div>
       </nav>
     </header>

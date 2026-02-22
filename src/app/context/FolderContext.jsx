@@ -14,7 +14,7 @@ export const FolderContextProvider = ({ children }) => {
     const [folders, setFolders] = useState([])
     const [loading, setLoading] = useState(false)
     const [folderContent, setFolderContent] = useState([])
-    const [foldersLoaded ,setFoldersLoaded] = useState(false)
+    const [foldersLoaded, setFoldersLoaded] = useState(false)
 
     useEffect(() => {
         getFolders();

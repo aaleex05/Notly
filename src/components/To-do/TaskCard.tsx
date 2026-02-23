@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import Button from "../ui/buttonStyle";
 import { toast } from "sonner";
+import { useFolder } from "@/app/context/FolderContext";
 
 interface taskProps {
   name: string;
@@ -23,7 +24,11 @@ interface taskProps {
   done: boolean;
   id: number;
   expirationDate: null;
-  foldereID?: number;
+}
+
+interface FolderProps {
+  id: number;
+  name: string;
 }
 
 interface DeleteAlertProps {
@@ -70,6 +75,7 @@ function DeleteAlert({ onDelete }: DeleteAlertProps) {
 
 function TaskCard(task: taskProps) {
   const { deleteTask, updateDone } = useTask();
+  const { folders, folderContent } = useFolder();
   const handleDelete = () => deleteTask(task.id);
 
   const handleToggleDone = () => {
@@ -107,6 +113,14 @@ function TaskCard(task: taskProps) {
 
   const priority = priorityList[Number(task.priority)] || priorityList[1];
 
+  interface FolderTaskRelation {
+    tasks: taskProps;
+  }
+
+  const tasksToShow: taskProps[] = (folderContent[0]?.folder_tasks?.map(
+        (relation: FolderTaskRelation) => relation.tasks
+    )) || []
+
   return (
     <div className="w-full h-full">
       <div className="h-full flex flex-col rounded-lg shadow-sm border bg-primary border-border">
@@ -140,6 +154,15 @@ function TaskCard(task: taskProps) {
             >
               {priority.label}
             </span>
+          </div>
+          <div>
+            {folders.map((folder: FolderProps) => {
+              if (tasksToShow.some((t) => t.id === task.id)) {
+                return (<span key={folder.id} className="text-xs sm:text-sm py-0.5 sm:py-1 px-2.5 sm:px-3 rounded-full bg-blue-200 text-blue-700">
+                  {folder.name}
+                </span>
+            )}
+            })}
           </div>
         </div>
 

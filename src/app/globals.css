@@ -119,9 +119,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     @apply border-b-1 border-white/50 my-4;
   }
 
-  
-
-
   .editor-prose code {
     @apply bg-gray-800 text-gray-200 px-1.5 py-0.5 rounded text-sm font-mono;
   }
@@ -146,6 +143,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     scrollbar-width: none;
     /* Firefox */
   }
+
+  
 }
 
 @layer base {

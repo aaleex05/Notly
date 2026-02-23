@@ -27,7 +27,7 @@ export function DashboardLayoutContent({ children }: { children: React.ReactNode
                 <SideBar>
                     <SideBarItem icon={<HomeIcon />} text="Inicio" href={"/dashboard"} />
                     <SideBarItem icon={<ListChecks />} text="To-Do" href={"/dashboard/to-do"} />
-                    <SideBarItem icon={<NotepadText />} text="Notas" href={"/dashboard/notas"} />
+                    <SideBarItem icon={<NotepadText />} text="Notas" href={"/dashboard/notes"} />
                     <SideBarItem icon={<Folder />} text="Carpetas" href={"/dashboard/folders"} />
                     <hr className="my-5 border-border" />
                     <SideBarCreateItem />

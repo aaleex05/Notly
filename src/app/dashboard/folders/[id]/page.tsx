@@ -1,7 +1,6 @@
 "use client"
 import React, { use, useEffect } from "react"
 import { useFolder } from "@/app/context/FolderContext"
-import { Spinner } from "@/components/ui/spinner"
 import TaskCard from "@/components/To-do/TaskCard"
 import CreateTask from "@/components/To-do/CreateTask"
 import { Folder } from "lucide-react"
@@ -29,7 +28,7 @@ function FolderPageContentClient({ id }: { id: number }) {
         tasks: taskProps
     }
 
-    const { FolderContent, folderContent, loading } = useFolder()
+    const { FolderContent, folderContent } = useFolder()
     const { tasks } = useTask()
 
     useEffect(() => {

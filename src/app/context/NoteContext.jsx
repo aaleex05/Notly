@@ -142,7 +142,7 @@ export const NoteContextProvider = ({ children }) => {
 
     const newNote = () => {
         setCurrentNoteId(null)
-        setCurrentTitle("")
+        setCurrentTitle("Sin título")
         setCurrentContent("")
     }
 

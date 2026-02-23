@@ -10,6 +10,7 @@ import { StatsRow } from "@/components/DashboardHome/stats-row";
 import TasksToday from "@/components/DashboardHome/task-today";
 import { DailyProgress } from "@/components/DashboardHome/daily-progress";
 import QuickActions from "@/components/DashboardHome/quick-actions";
+import TotalNotes from "@/components/DashboardHome/total-notes";
 
 export function DashboardContent() {
   const [loading, setLoading] = useState(true);
@@ -81,6 +82,9 @@ export function DashboardContent() {
             <DailyProgress />
             <QuickActions />
           </div>
+        </div>
+        <div className="mt-6">
+          <TotalNotes />
         </div>
       </div>
     </main>

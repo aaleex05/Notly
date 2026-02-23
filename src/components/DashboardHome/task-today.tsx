@@ -26,7 +26,7 @@ export default function TasksToday() {
   };
 
   return (
-    <div className="border-border border bg-primary rounded-lg py-7 px-6">
+    <div className="border-border border bg-primary rounded-lg py-7 px-6 overflow-y-auto max-h-55 no-scrollbar">
       <div className="pb-2 justify-between flex items-center">
         <h1 className="text-sm font-medium text-muted-foreground">
           Tareas de hoy

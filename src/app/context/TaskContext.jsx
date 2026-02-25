@@ -199,6 +199,7 @@ export const TaskContextProvider = ({ children }) => {
         setDate,
         month,
         setMonth,
+        setTasks,
       }}
     >
       {children}

@@ -163,7 +163,8 @@ export const NoteContextProvider = ({ children }) => {
                 newNote,
                 deleteNote,
                 mostrarNota,
-                setMostrarNota
+                setMostrarNota,
+                setNotes
                 }}>
             {children}
         </NoteContext.Provider>

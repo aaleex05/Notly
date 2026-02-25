@@ -80,7 +80,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 @layer components {
   .editor-prose {
     @apply text-white/80;
-    @apply leading-4
+    @apply leading-6;
   }
 
   .editor-prose h1 {
